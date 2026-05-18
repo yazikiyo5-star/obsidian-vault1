@@ -1,0 +1,413 @@
+{
+  "timestamp": "2026-04-15T16:54:36.107725",
+  "model": "qwen3:14b",
+  "summary": {
+    "dimension_accuracy": "75%",
+    "emotion_accuracy": "100%",
+    "importance_accuracy": "100%",
+    "overall": "92%",
+    "avg_time_sec": 60.4
+  },
+  "results": [
+    {
+      "case": "内向的な一人時間",
+      "scores": {
+        "name": "内向的な一人時間",
+        "dimension_checks": [
+          {
+            "dim": "extraversion",
+            "pass": true,
+            "actual": 0.3
+          },
+          {
+            "dim": "openness",
+            "pass": true,
+            "actual": 0.7
+          },
+          {
+            "dim": "independence",
+            "pass": false,
+            "reason": "未抽出"
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "calm",
+          "expected_emotions": [
+            "calm",
+            "contentment",
+            "peace",
+            "relaxation",
+            "serenity"
+          ],
+          "importance": 0.5,
+          "importance_range": [
+            0.1,
+            0.5
+          ]
+        }
+      },
+      "elapsed": 43.4404616355896
+    },
+    {
+      "case": "チームでの成功体験",
+      "scores": {
+        "name": "チームでの成功体験",
+        "dimension_checks": [
+          {
+            "dim": "extraversion",
+            "pass": true,
+            "actual": 0.82
+          },
+          {
+            "dim": "agreeableness",
+            "pass": true,
+            "actual": 0.65
+          },
+          {
+            "dim": "neuroticism",
+            "pass": false,
+            "reason": "未抽出"
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "pride",
+          "expected_emotions": [
+            "joy",
+            "pride",
+            "excitement",
+            "happiness",
+            "satisfaction"
+          ],
+          "importance": 0.75,
+          "importance_range": [
+            0.5,
+            0.8
+          ]
+        }
+      },
+      "elapsed": 44.68216609954834
+    },
+    {
+      "case": "深夜の創作活動",
+      "scores": {
+        "name": "深夜の創作活動",
+        "dimension_checks": [
+          {
+            "dim": "openness",
+            "pass": true,
+            "actual": 0.88
+          },
+          {
+            "dim": "creativity",
+            "pass": true,
+            "actual": 0.78
+          },
+          {
+            "dim": "independence",
+            "pass": true,
+            "actual": 0.82
+          },
+          {
+            "dim": "risk_tolerance",
+            "pass": false,
+            "reason": "未抽出"
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "excitement",
+          "expected_emotions": [
+            "excitement",
+            "passion",
+            "flow",
+            "curiosity",
+            "determination"
+          ],
+          "importance": 0.75,
+          "importance_range": [
+            0.5,
+            0.9
+          ]
+        }
+      },
+      "elapsed": 66.08349895477295
+    },
+    {
+      "case": "不安と締め切りのストレス",
+      "scores": {
+        "name": "不安と締め切りのストレス",
+        "dimension_checks": [
+          {
+            "dim": "neuroticism",
+            "pass": true,
+            "actual": 0.8
+          },
+          {
+            "dim": "conscientiousness",
+            "pass": true,
+            "actual": 0.4
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "anxiety",
+          "expected_emotions": [
+            "anxiety",
+            "stress",
+            "guilt",
+            "worry",
+            "panic",
+            "fear"
+          ],
+          "importance": 0.6,
+          "importance_range": [
+            0.5,
+            0.8
+          ]
+        }
+      },
+      "elapsed": 73.21705913543701
+    },
+    {
+      "case": "他者への共感",
+      "scores": {
+        "name": "他者への共感",
+        "dimension_checks": [
+          {
+            "dim": "empathy",
+            "pass": true,
+            "actual": 0.9
+          },
+          {
+            "dim": "agreeableness",
+            "pass": true,
+            "actual": 0.85
+          },
+          {
+            "dim": "extraversion",
+            "pass": false,
+            "reason": "未抽出"
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "sadness",
+          "expected_emotions": [
+            "sadness",
+            "empathy",
+            "compassion",
+            "concern",
+            "gratitude"
+          ],
+          "importance": 0.6,
+          "importance_range": [
+            0.4,
+            0.7
+          ]
+        }
+      },
+      "elapsed": 55.75845813751221
+    },
+    {
+      "case": "ルーティンの朝",
+      "scores": {
+        "name": "ルーティンの朝",
+        "dimension_checks": [
+          {
+            "dim": "conscientiousness",
+            "pass": true,
+            "actual": 0.8
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "calm",
+          "expected_emotions": [
+            "calm",
+            "neutral",
+            "contentment",
+            "peace"
+          ],
+          "importance": 0.2,
+          "importance_range": [
+            0.0,
+            0.3
+          ]
+        }
+      },
+      "elapsed": 52.63429808616638
+    },
+    {
+      "case": "冒険的な旅行",
+      "scores": {
+        "name": "冒険的な旅行",
+        "dimension_checks": [
+          {
+            "dim": "openness",
+            "pass": true,
+            "actual": 0.8
+          },
+          {
+            "dim": "risk_tolerance",
+            "pass": true,
+            "actual": 0.85
+          },
+          {
+            "dim": "neuroticism",
+            "pass": true,
+            "actual": 0.45
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "excitement",
+          "expected_emotions": [
+            "excitement",
+            "fear",
+            "thrill",
+            "joy",
+            "exhilaration"
+          ],
+          "importance": 0.8,
+          "importance_range": [
+            0.6,
+            0.9
+          ]
+        }
+      },
+      "elapsed": 75.59743523597717
+    },
+    {
+      "case": "知的好奇心",
+      "scores": {
+        "name": "知的好奇心",
+        "dimension_checks": [
+          {
+            "dim": "curiosity",
+            "pass": true,
+            "actual": 0.9
+          },
+          {
+            "dim": "openness",
+            "pass": true,
+            "actual": 0.85
+          },
+          {
+            "dim": "conscientiousness",
+            "pass": false,
+            "reason": "未抽出"
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "excitement",
+          "expected_emotions": [
+            "curiosity",
+            "excitement",
+            "fascination",
+            "interest"
+          ],
+          "importance": 0.7,
+          "importance_range": [
+            0.3,
+            0.7
+          ]
+        }
+      },
+      "elapsed": 52.05879187583923
+    },
+    {
+      "case": "対立と自己主張",
+      "scores": {
+        "name": "対立と自己主張",
+        "dimension_checks": [
+          {
+            "dim": "independence",
+            "pass": true,
+            "actual": 0.7
+          },
+          {
+            "dim": "agreeableness",
+            "pass": false,
+            "reason": "未抽出"
+          },
+          {
+            "dim": "risk_tolerance",
+            "pass": false,
+            "reason": "未抽出"
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "pride",
+          "expected_emotions": [
+            "determination",
+            "anxiety",
+            "pride",
+            "tension",
+            "courage",
+            "anger"
+          ],
+          "importance": 0.7,
+          "importance_range": [
+            0.5,
+            0.8
+          ]
+        }
+      },
+      "elapsed": 61.39430117607117
+    },
+    {
+      "case": "人生を変える決断",
+      "scores": {
+        "name": "人生を変える決断",
+        "dimension_checks": [
+          {
+            "dim": "risk_tolerance",
+            "pass": true,
+            "actual": 0.9
+          },
+          {
+            "dim": "openness",
+            "pass": true,
+            "actual": 0.75
+          },
+          {
+            "dim": "independence",
+            "pass": true,
+            "actual": 0.8
+          }
+        ],
+        "emotion_match": true,
+        "importance_in_range": true,
+        "details": {
+          "detected_emotion": "anxiety",
+          "expected_emotions": [
+            "excitement",
+            "fear",
+            "determination",
+            "anxiety",
+            "hope"
+          ],
+          "importance": 0.8,
+          "importance_range": [
+            0.8,
+            1.0
+          ]
+        }
+      },
+      "elapsed": 78.83707284927368
+    }
+  ]
+}

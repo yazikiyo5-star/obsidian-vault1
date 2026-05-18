@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ghost-Print  ·  人類、 あなたの選択は？</title>
+<style>
+  /* ─────────────────────────────────────────────
+     Ghost-Print  ·  Visual Mockup v0.2
+     v0.2: SOUL→GHOST 統一 / 新タグライン / 3D Core+Shell ビューア
+     ───────────────────────────────────────────── */
+  :root{
+    --void:#050507;
+    --ink:#0B0D12;
+    --steel:#1A1F2B;
+    --bone:#E6E8EE;
+    --ghost:#8A93A6;
+    --cyan:#00FFE5;
+    --magenta:#FF1F8F;
+    --amber:#FFAE00;
+    --blood:#FF3344;
+    --mono:'Berkeley Mono','IBM Plex Mono','JetBrains Mono','SF Mono','Menlo',monospace;
+    --jp:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--void);color:var(--bone);font-family:var(--mono);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{overflow-x:hidden;min-height:100vh;
+    background-image:
+      radial-gradient(ellipse at 50% -10%, rgba(0,255,229,.05), transparent 60%),
+      radial-gradient(ellipse at 50% 120%, rgba(255,31,143,.04), transparent 60%);
+  }
+  body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:99;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px);
+    mix-blend-mode:overlay;}
+  a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+  a:hover{border-bottom-color:var(--cyan)}
+  ::selection{background:var(--cyan);color:var(--void)}
+
+  /* ── nav ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;
+       justify-content:space-between;padding:18px 28px;background:linear-gradient(to bottom,var(--void),transparent);
+       font-size:12px;letter-spacing:.05em}
+  nav .logo{display:flex;align-items:center;gap:10px}
+  nav .logo .glyph{color:var(--cyan);letter-spacing:0}
+  nav ul{display:flex;gap:24px;list-style:none}
+  nav .status{color:var(--ghost)}
+  nav .status .dot{display:inline-block;width:6px;height:6px;background:var(--magenta);border-radius:50%;
+                    box-shadow:0 0 8px var(--magenta);margin-right:6px;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* ── hero ── */
+  .hero{min-height:100vh;display:grid;grid-template-rows:1fr auto;padding:90px 28px 28px;position:relative;overflow:hidden}
+  .grid-bg{position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse at 50% 40%, #000 30%, transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse at 50% 40%, #000 30%, transparent 75%);}
+  .hero .ascii-bonsai{position:absolute;right:6%;top:18%;color:var(--ghost);font-size:10px;line-height:1.05;white-space:pre;opacity:.55;pointer-events:none}
+  .hero .ascii-bonsai b{color:var(--magenta);font-weight:normal}
+  .hero .ascii-bonsai i{color:var(--cyan);font-style:normal}
+
+  .hex-strip{position:absolute;left:0;right:0;bottom:120px;height:18px;color:var(--ghost);font-size:10px;
+              white-space:nowrap;overflow:hidden;opacity:.4}
+  .hex-strip span{display:inline-block;animation:scrollLeft 40s linear infinite;padding-right:80px}
+  @keyframes scrollLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  .hero-inner{position:relative;align-self:center;max-width:1100px;margin:0 auto;width:100%;padding-top:80px}
+  .eyebrow{color:var(--ghost);font-size:11px;letter-spacing:.2em;margin-bottom:28px}
+  .eyebrow .bracket{color:var(--cyan)}
+  h1.display{font-family:var(--jp);font-weight:500;font-size:clamp(40px,6vw,76px);line-height:1.1;
+              letter-spacing:-.01em;color:var(--bone);margin-bottom:18px}
+  h1.display .q{color:var(--cyan)}
+  h1.display .en{display:block;font-family:var(--mono);font-weight:400;color:var(--ghost);
+                  font-size:clamp(20px,2.6vw,32px);margin-top:18px;letter-spacing:0}
+  .hero p.kicker{max-width:560px;color:var(--ghost);margin-top:32px;font-family:var(--jp);font-size:14px;line-height:1.85}
+  .hero p.kicker .hi{color:var(--bone)}
+  .hero .cta{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:13px 18px;border:1px solid var(--steel);
+        background:var(--ink);color:var(--bone);font-family:var(--mono);font-size:12px;letter-spacing:.05em;
+        transition:all .15s;cursor:pointer}
+  .btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 0 1px var(--cyan), 0 0 24px rgba(0,255,229,.15)}
+  .btn.primary{background:var(--cyan);color:var(--void);border-color:var(--cyan)}
+  .btn.primary:hover{background:transparent;color:var(--cyan)}
+  .btn .arrow{display:inline-block;transform:translateY(-1px)}
+
+  .hero-foot{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;font-size:11px;color:var(--ghost);
+              border-top:1px solid var(--steel);padding-top:18px;margin-top:48px}
+  .hero-foot div span{display:block;color:var(--bone);font-family:var(--mono);font-size:13px;margin-top:4px}
+
+  /* ── section base ── */
+  section{padding:110px 28px;border-top:1px solid var(--steel);position:relative}
+  .container{max-width:1100px;margin:0 auto}
+  .section-eyebrow{color:var(--ghost);font-size:11px;letter-spacing:.2em;margin-bottom:24px}
+  .section-eyebrow .num{color:var(--cyan)}
+  h2{font-family:var(--jp);font-weight:500;font-size:clamp(26px,3.4vw,42px);line-height:1.25;
+      max-width:880px;margin-bottom:36px}
+  h2 .en{display:block;font-family:var(--mono);color:var(--ghost);font-size:14px;letter-spacing:0;margin-top:10px;font-weight:400}
+
+  /* ── manifesto ── */
+  .manifesto{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:start}
+  .manifesto .body{font-family:var(--jp);font-size:18px;line-height:1.95;color:var(--bone)}
+  .manifesto .quote{padding:24px;border:1px solid var(--steel);background:var(--ink);position:relative}
+  .manifesto .quote::before{content:'> ';color:var(--cyan)}
+  .manifesto .quote em{font-style:normal;color:var(--cyan)}
+
+  /* ── pillars ── */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--steel)}
+  .pillar{padding:36px 28px;border-right:1px solid var(--steel);position:relative;min-height:280px;
+           transition:background .2s}
+  .pillar:last-child{border-right:0}
+  .pillar:hover{background:var(--ink)}
+  .pillar .icon{font-family:var(--mono);font-size:14px;color:var(--cyan);white-space:pre;line-height:1.1;margin-bottom:24px;height:54px}
+  .pillar .icon i{color:var(--magenta);font-style:normal}
+  .pillar h3{font-family:var(--mono);font-size:13px;letter-spacing:.18em;color:var(--bone);margin-bottom:14px}
+  .pillar p{font-family:var(--jp);font-size:13px;color:var(--ghost);line-height:1.85}
+  .pillar .num{position:absolute;top:14px;right:16px;font-size:10px;color:var(--ghost)}
+
+  /* ── three components (Ring/Core/Shell) ── */
+  .components{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--steel)}
+  .component{display:flex;flex-direction:column;border-right:1px solid var(--steel);transition:background .2s;position:relative}
+  .component:last-child{border-right:0}
+  .component:hover{background:var(--ink)}
+  .component .num{position:absolute;top:14px;right:16px;font-size:10px;color:var(--ghost);z-index:2}
+  .comp-img{aspect-ratio:1.4/1;background:var(--void);border-bottom:1px solid var(--steel);
+            position:relative;overflow:hidden}
+  .comp-img svg{width:100%;height:100%;display:block}
+  .comp-head{display:flex;justify-content:space-between;align-items:flex-start;
+             padding:22px 22px 0;gap:12px}
+  .comp-head .role{font-family:var(--mono);font-size:15px;letter-spacing:.18em;color:var(--bone)}
+  .comp-head .verb{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--cyan);text-align:right;line-height:1.4}
+  .comp-head .verb .jp{display:block;color:var(--ghost);margin-top:3px;font-family:var(--jp);font-size:11px;letter-spacing:.05em}
+  .component p.body{padding:14px 22px 0;font-family:var(--jp);font-size:13px;color:var(--ghost);line-height:1.85;flex:1}
+  .component p.body .hi{color:var(--bone)}
+  .comp-spec{padding:18px 22px 22px;font-family:var(--mono);font-size:11px;color:var(--ghost);
+             border-top:1px solid var(--steel);margin-top:18px;display:grid;
+             grid-template-columns:auto 1fr;gap:6px 14px}
+  .comp-spec dt{color:var(--ghost);letter-spacing:.05em}
+  .comp-spec dd{color:var(--bone)}
+
+  /* ── 3D viewer ── */
+  .device-3d{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch}
+  .viewer{position:relative;border:1px solid var(--steel);background:
+      radial-gradient(ellipse at 50% 30%, rgba(0,255,229,.08), transparent 60%),
+      radial-gradient(ellipse at 30% 80%, rgba(255,31,143,.06), transparent 50%),
+      var(--ink);
+      aspect-ratio:1.25/1;overflow:hidden;cursor:grab}
+  .viewer:active{cursor:grabbing}
+  .viewer canvas{display:block;width:100%;height:100%}
+  .viewer .label{position:absolute;font-family:var(--mono);font-size:10px;letter-spacing:.1em;pointer-events:none}
+  .viewer .label.tl{top:14px;left:14px;color:var(--cyan)}
+  .viewer .label.bl{bottom:14px;left:14px;color:var(--ghost)}
+  .viewer .label.tr{top:14px;right:14px;color:var(--ghost)}
+  .viewer .label.br{bottom:14px;right:14px;color:var(--ghost)}
+  .viewer .hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+                color:var(--ghost);font-size:10px;letter-spacing:.1em;opacity:.7;pointer-events:none}
+  .viewer .hint::before{content:'◐ ';color:var(--cyan)}
+
+  .device-side{display:flex;flex-direction:column;gap:20px}
+  .core-spec, .shell-pick{border:1px solid var(--steel);background:var(--ink);padding:20px}
+  .core-spec h4, .shell-pick h4{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--cyan);margin-bottom:14px}
+  .core-spec h4 .sub, .shell-pick h4 .sub{color:var(--ghost);margin-left:8px}
+  .spec-table{font-family:var(--mono);font-size:12px;width:100%;border-collapse:collapse}
+  .spec-table tr{border-bottom:1px solid var(--steel)}
+  .spec-table tr:last-child{border-bottom:0}
+  .spec-table td{padding:9px 0}
+  .spec-table td:first-child{color:var(--ghost);width:40%;letter-spacing:.05em}
+  .spec-table td:last-child{color:var(--bone)}
+  .spec-table td .acc{color:var(--cyan)}
+
+  .shell-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .shell-btn{background:var(--void);border:1px solid var(--steel);color:var(--bone);
+             font-family:var(--mono);font-size:11px;letter-spacing:.1em;padding:14px 12px;
+             cursor:pointer;text-align:left;transition:all .15s}
+  .shell-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+  .shell-btn.active{border-color:var(--cyan);background:rgba(0,255,229,.06);color:var(--cyan);
+                     box-shadow:inset 0 0 0 1px var(--cyan)}
+  .shell-btn .name{display:block;font-size:12px;margin-bottom:4px}
+  .shell-btn .desc{display:block;color:var(--ghost);font-size:9px;letter-spacing:.05em;line-height:1.4}
+  .shell-btn.active .desc{color:var(--bone)}
+
+  .shell-msg{padding:18px;border-left:2px solid var(--cyan);background:rgba(0,255,229,.03);
+              font-family:var(--jp);font-size:13px;color:var(--bone);line-height:1.85}
+  .shell-msg .en{display:block;font-family:var(--mono);font-size:11px;color:var(--ghost);margin-top:8px;letter-spacing:.05em}
+  .shell-msg a{color:var(--cyan);border-bottom:1px solid var(--cyan)}
+
+  /* ── how it works ── */
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--steel);
+          border-bottom:1px solid var(--steel);position:relative}
+  .step{padding:24px 18px;border-right:1px solid var(--steel);position:relative}
+  .step:last-child{border-right:0}
+  .step .n{display:inline-block;width:22px;height:22px;border:1px solid var(--cyan);color:var(--cyan);
+            text-align:center;line-height:20px;font-size:11px;margin-bottom:14px}
+  .step h4{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--bone);margin-bottom:10px}
+  .step p{font-family:var(--jp);font-size:12px;color:var(--ghost);line-height:1.7}
+
+  /* ── trust ── */
+  .trust{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--steel)}
+  .trust .item{padding:28px;border-right:1px solid var(--steel);border-bottom:1px solid var(--steel);
+                display:grid;grid-template-columns:auto 1fr;gap:18px}
+  .trust .item:nth-child(2n){border-right:0}
+  .trust .item:nth-last-child(-n+2){border-bottom:0}
+  .trust .check{color:var(--cyan);font-family:var(--mono);font-size:18px;line-height:1}
+  .trust h5{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--bone);margin-bottom:8px}
+  .trust p{font-family:var(--jp);font-size:13px;color:var(--ghost);line-height:1.8}
+
+  /* ── timeline ── */
+  .timeline{font-family:var(--mono);font-size:13px;border:1px solid var(--steel);background:var(--ink)}
+  .timeline .row{display:grid;grid-template-columns:120px 1fr 100px;gap:20px;padding:14px 22px;
+                  border-bottom:1px solid var(--steel);align-items:center}
+  .timeline .row:last-child{border-bottom:0}
+  .timeline .row .when{color:var(--cyan)}
+  .timeline .row .what{color:var(--bone)}
+  .timeline .row .state{justify-self:end;font-size:10px;letter-spacing:.15em;padding:4px 8px;border:1px solid var(--steel);color:var(--ghost)}
+  .timeline .row .state.done{color:var(--cyan);border-color:var(--cyan)}
+  .timeline .row .state.wip{color:var(--amber);border-color:var(--amber)}
+
+  /* ── waitlist ── */
+  .waitlist{text-align:center;max-width:560px;margin:0 auto}
+  .waitlist h2{margin:0 auto 36px}
+  .waitlist form{display:flex;gap:0;border:1px solid var(--steel)}
+  .waitlist input{flex:1;background:var(--ink);border:0;padding:16px 18px;color:var(--bone);
+                   font-family:var(--mono);font-size:13px;outline:none}
+  .waitlist input::placeholder{color:var(--ghost)}
+  .waitlist input:focus{box-shadow:inset 0 0 0 1px var(--cyan)}
+  .waitlist button{background:var(--cyan);color:var(--void);border:0;padding:0 22px;font-family:var(--mono);
+                    font-size:12px;letter-spacing:.1em;cursor:pointer}
+  .waitlist .sub{margin-top:18px;color:var(--ghost);font-size:11px}
+
+  /* ── footer ── */
+  footer{padding:48px 28px;border-top:1px solid var(--steel);font-size:11px;color:var(--ghost)}
+  footer .container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+  footer .links{display:flex;gap:18px;flex-wrap:wrap}
+
+  /* ── responsive ── */
+  @media (max-width: 880px){
+    .hero .ascii-bonsai{display:none}
+    .manifesto,.device-3d{grid-template-columns:1fr;gap:32px}
+    .pillars,.trust,.components{grid-template-columns:1fr}
+    .pillar,.trust .item,.component{border-right:0;border-bottom:1px solid var(--steel)}
+    .pillar:last-child,.trust .item:last-child,.component:last-child{border-bottom:0}
+    .steps{grid-template-columns:1fr 1fr}
+    .step{border-bottom:1px solid var(--steel)}
+    .hero-foot{grid-template-columns:1fr}
+    nav ul{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <span class="glyph">▓▒░</span>
+    <span>GHOST-PRINT</span>
+  </div>
+  <ul>
+    <li><a href="#manifesto">manifesto</a></li>
+    <li><a href="#components">ring · core · shell</a></li>
+    <li><a href="#device">3d</a></li>
+    <li><a href="/shells">shells</a></li>
+    <li><a href="/spec">spec</a></li>
+  </ul>
+  <div class="status"><span class="dot"></span>PRE-MVP / rev.A6</div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<header class="hero">
+  <div class="grid-bg"></div>
+
+  <pre class="ascii-bonsai">
+              <i>◉</i>
+            ╱ │ ╲
+          ╱   │   ╲
+         <b>◉</b>    │    <i>◉</i>
+        ╱ ╲   │   ╱ ╲
+       ╱   ╲  │  ╱   ╲
+      <i>◉</i>     <b>◉</b> │ <i>◉</i>     <i>◉</i>
+     ╱│╲   ╱╲ │ ╱╲   ╱│╲
+    ─┴─┴───┴──┴──┴───┴─┴─
+       BONSAI  ·  1.7B
+        importance score
+            0.92
+            0.81
+            0.74
+            0.12  · pruned
+            0.04  · pruned</pre>
+
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="bracket">[</span> ghost-print.io <span class="bracket">/</span> teaser concept v0.2 <span class="bracket">]</span></div>
+    <h1 class="display">
+      人類、 あなたの選択は<span class="q">？</span>
+      <span class="en">What  will  you  give  them?</span>
+    </h1>
+    <p class="kicker">
+      <span class="hi">毎日、 AI はあなたから何かを抜き出している。</span>
+      Ghost-Print は、 それを反転させる装置だ。
+      Bonsai 1.7B が剪定し、 Ghost Dock を通じて、
+      あなたが選んだものだけが AI に渡る。 すべてはオフライン。
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#waitlist">ウェイトリストに登録 <span class="arrow">›</span></a>
+      <a class="btn" href="#device">デバイスを 3D で見る <span class="arrow">›</span></a>
+      <a class="btn" href="/spec">GHOST v0.1 仕様書 <span class="arrow">›</span></a>
+    </div>
+  </div>
+
+  <div class="hex-strip">
+    <span>02 0E 47 48 4F 53 54 50 52 49 4E 54 47 48 4F 53 54 00 01 00 00 14 32 7F 8A 9C 0F 1B 22 4D 5E 6F 70 81 92 A3 B4 C5 D6 E7 F8 09 1A 2B 3C 4D ░░░░░░░░  02 0E 47 48 4F 53 54 50 52 49 4E 54 47 48 4F 53 54 00 01 00 00 14 32 7F 8A 9C 0F 1B 22 4D 5E 6F 70 81 92 A3 B4 C5 D6 E7 F8 09 1A 2B 3C 4D ░░░░░░░░ </span>
+  </div>
+
+  <div class="container hero-foot">
+    <div>SoC <span>Rockchip RK3566 / 4GB LPDDR4</span></div>
+    <div>Engine <span>Bonsai 1.7B  Q1_0  ·  3.03 t/s</span></div>
+    <div>Status <span>Ghost Dock wired only  ·  Pre-MVP</span></div>
+  </div>
+</header>
+
+<!-- ─── MANIFESTO ─── -->
+<section id="manifesto">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">01</span>  /  manifesto</div>
+    <h2>
+      AI に魂を奪われる時代に、 自分で印字する。
+      <span class="en">Self-Ripperdoc, by design.</span>
+    </h2>
+    <div class="manifesto">
+      <div class="body">
+        Ghost-Print はクラウド AI に対する <strong>抗体</strong> ではない。
+        AI とつき合うために、 あなた側の <strong>編集権</strong> を取り戻す装置だ。<br><br>
+        リング (COLMI R02) が身体を読み、 マイクが声を聴き、
+        Bonsai 1.7B が <strong>意味を剪定</strong> する。
+        生まれた GHOST ファイルは、 あなたの手のひらに残る。<br><br>
+        渡すか、 ポケットに戻すか。 それを毎回選べることが、 唯一の自由だ。
+      </div>
+      <div class="quote">
+        Bonsai が剪定する。<br>
+        あなたが選ぶ。<br>
+        AI が <em>ようやく</em> 読む。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PILLARS ─── -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">02</span>  /  three pillars</div>
+    <h2>抽出する。 剪定する。 選ぶ。<span class="en">Extract  ·  Distill  ·  Choose.</span></h2>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="num">01</div>
+        <div class="icon"> ◉  ◉  ◉
+ BPM  SpO  TMP
+ ─── ─── ───</div>
+        <h3>EXTRACT</h3>
+        <p>リング・声・位置・心拍 ―― 24時間の生データを、 デバイス内で取得する。 クラウドへは送らない。</p>
+      </div>
+      <div class="pillar">
+        <div class="num">02</div>
+        <div class="icon">      ╱│╲
+     ╱ │ ╲
+    <i>◉</i>  │  <i>◉</i>
+   ╱│  │  │╲
+  ─┴──┴──┴─</div>
+        <h3>DISTILL</h3>
+        <p>Bonsai 1.7B が、 重要度スコアで剪定する。 残るのは "意味" だけ。 GHOST.bin は約 14.3 KB。</p>
+      </div>
+      <div class="pillar">
+        <div class="num">03</div>
+        <div class="icon"> ▓▒░ → ░░░
+ ┌─┐  ┌─┐
+ │█│  │ │
+ └─┘  └─┘
+ give  keep</div>
+        <h3>CHOOSE</h3>
+        <p>Ghost Dock を挿す瞬間、 所有権が反転する。 渡すか、 戻すか、 毎回あなたが決める。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── THREE COMPONENTS (Ring / Core / Shell) ─── -->
+<section id="components">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">03</span>  /  three components</div>
+    <h2>身体に置く、 机に置く、 手で纏う。<span class="en">Three components, three roles.  ·  ring · core · shell.</span></h2>
+    <div class="components">
+
+      <!-- ─── RING ─── -->
+      <div class="component">
+        <div class="num">01 / 03</div>
+        <div class="comp-img">
+          <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ring · COLMI R02 biometric sensor">
+            <defs>
+              <radialGradient id="ringGlow" cx="0.5" cy="0.5">
+                <stop offset="0%" stop-color="#00FFE5" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#00FFE5" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <g fill="none" stroke="#00FFE5" stroke-width="0.8" opacity="0.18">
+              <ellipse cx="140" cy="100" rx="110" ry="38"/>
+              <ellipse cx="140" cy="100" rx="95" ry="32"/>
+              <ellipse cx="140" cy="100" rx="80" ry="26"/>
+            </g>
+            <path d="M30,55 L90,55 L98,42 L106,72 L114,28 L122,60 L130,55 L250,55"
+                  fill="none" stroke="#00FFE5" stroke-width="1" opacity="0.6"/>
+            <circle cx="140" cy="100" r="42" fill="url(#ringGlow)"/>
+            <g transform="translate(140, 100)">
+              <ellipse rx="60" ry="20" fill="#2a2f38" stroke="#80868f" stroke-width="1.5"/>
+              <ellipse rx="44" ry="13" fill="#050507"/>
+              <path d="M-55,-3 Q0,-23 55,-3" fill="none" stroke="#9097a0" stroke-width="0.8" opacity="0.7"/>
+              <path d="M-55,3 Q0,21 55,3" fill="none" stroke="#1a1f2b" stroke-width="0.5"/>
+              <circle cx="0" cy="7" r="2.5" fill="#00FFE5">
+                <animate attributeName="opacity" values="0.35;1;0.35" dur="1.4s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="0" cy="7" fill="none" stroke="#00FFE5" stroke-width="0.5" opacity="0.6">
+                <animate attributeName="r" values="3;11;3" dur="1.4s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.7;0;0.7" dur="1.4s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            <g stroke="#8A93A6" stroke-width="0.5" opacity="0.5">
+              <line x1="18" y1="100" x2="28" y2="100"/>
+              <line x1="23" y1="95" x2="23" y2="105"/>
+              <line x1="252" y1="100" x2="262" y2="100"/>
+              <line x1="257" y1="95" x2="257" y2="105"/>
+            </g>
+            <g font-family="ui-monospace, 'Berkeley Mono', monospace" font-size="9">
+              <text x="20" y="178" fill="#8A93A6">◉ BPM 078</text>
+              <text x="100" y="178" fill="#00FFE5">SpO 097</text>
+              <text x="180" y="178" fill="#8A93A6">T 36.4°C</text>
+            </g>
+            <g stroke="#8A93A6" stroke-width="0.6" opacity="0.4" fill="none">
+              <path d="M10,10 L10,20 M10,10 L20,10"/>
+              <path d="M270,10 L260,10 M270,10 L270,20"/>
+              <path d="M10,190 L10,180 M10,190 L20,190"/>
+              <path d="M270,190 L260,190 M270,190 L270,180"/>
+            </g>
+          </svg>
+        </div>
+        <div class="comp-head">
+          <span class="role">RING</span>
+          <span class="verb">FEEL<span class="jp">感じる</span></span>
+        </div>
+        <p class="body">
+          <span class="hi">あなたの肌の上に、 24 時間置かれる。</span>
+          心拍 ・ SpO2 ・ 体温 ・ 動きを、 ただ感じる。 リング自体は計算しない。 信号を運ぶだけ。
+        </p>
+        <dl class="comp-spec">
+          <dt>device</dt><dd>COLMI R02</dd>
+          <dt>uplink</dt><dd>BLE</dd>
+          <dt>battery</dt><dd>~7 days</dd>
+          <dt>worn</dt><dd>finger / 24h</dd>
+        </dl>
+      </div>
+
+      <!-- ─── CORE ─── -->
+      <div class="component">
+        <div class="num">02 / 03</div>
+        <div class="comp-img">
+          <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Core · rev.A6 PCB with Bonsai 1.7B">
+            <g stroke="#1A1F2B" stroke-width="0.5" opacity="0.55">
+              <line x1="0" y1="50" x2="280" y2="50"/>
+              <line x1="0" y1="100" x2="280" y2="100"/>
+              <line x1="0" y1="150" x2="280" y2="150"/>
+              <line x1="70" y1="0" x2="70" y2="200"/>
+              <line x1="140" y1="0" x2="140" y2="200"/>
+              <line x1="210" y1="0" x2="210" y2="200"/>
+            </g>
+            <g transform="translate(140, 92)" stroke="#00FFE5" fill="none" stroke-width="1" opacity="0.85" stroke-linecap="round">
+              <line x1="0" y1="0" x2="0" y2="-30"/>
+              <line x1="0" y1="-15" x2="-18" y2="-30"/>
+              <line x1="0" y1="-15" x2="20" y2="-28"/>
+              <line x1="0" y1="-22" x2="-12" y2="-42"/>
+              <line x1="0" y1="-22" x2="14" y2="-44"/>
+              <line x1="0" y1="-30" x2="0" y2="-50"/>
+              <line x1="0" y1="-30" x2="-22" y2="-48"/>
+              <line x1="0" y1="-30" x2="22" y2="-50"/>
+              <line x1="-12" y1="-42" x2="-22" y2="-55"/>
+              <line x1="14" y1="-44" x2="24" y2="-58"/>
+            </g>
+            <g transform="translate(140, 92)" stroke="none">
+              <circle cx="-18" cy="-30" r="2" fill="#00FFE5"/>
+              <circle cx="20" cy="-28" r="2" fill="#00FFE5"/>
+              <circle cx="-12" cy="-42" r="2.6" fill="#FF1F8F"/>
+              <circle cx="14" cy="-44" r="2" fill="#00FFE5"/>
+              <circle cx="0" cy="-50" r="2.6" fill="#FF1F8F"/>
+              <circle cx="-22" cy="-48" r="1.5" fill="#00FFE5" opacity="0.7"/>
+              <circle cx="22" cy="-50" r="1.5" fill="#00FFE5" opacity="0.7"/>
+              <circle cx="-22" cy="-55" r="2.4" fill="#FF1F8F" opacity="0.85"/>
+              <circle cx="24" cy="-58" r="1.8" fill="#00FFE5"/>
+            </g>
+            <g fill="#8A93A6" opacity="0.45" font-family="ui-monospace, monospace" font-size="6">
+              <text x="40" y="48">0.12 ✕</text>
+              <text x="220" y="40">0.04 ✕</text>
+              <text x="38" y="74">0.08 ✕</text>
+              <text x="234" y="68">0.07 ✕</text>
+            </g>
+            <g fill="#00FFE5" font-family="ui-monospace, monospace" font-size="6" opacity="0.85">
+              <text x="155" y="62">0.92</text>
+              <text x="116" y="48">0.81</text>
+              <text x="170" y="48">0.74</text>
+            </g>
+            <g transform="translate(140, 105)">
+              <rect x="-80" y="20" width="160" height="6" fill="#102a26" stroke="#00FFE5" stroke-opacity="0.5"/>
+              <rect x="-80" y="20" width="160" height="1.5" fill="#00FFE5" opacity="0.35"/>
+              <rect x="-80" y="8" width="160" height="6" fill="#102a26" stroke="#00FFE5" stroke-opacity="0.5"/>
+              <rect x="-80" y="-4" width="160" height="6" fill="#102a26" stroke="#00FFE5" stroke-opacity="0.5"/>
+              <rect x="-78" y="-4" width="2" height="30" fill="#444a55"/>
+              <rect x="76" y="-4" width="2" height="30" fill="#444a55"/>
+              <rect x="-12" y="-12" width="24" height="8" fill="#1a1a1f" stroke="#00FFE5" stroke-width="0.5"/>
+              <text x="0" y="-6" text-anchor="middle" font-family="ui-monospace, monospace" font-size="4" fill="#00FFE5">RK3566</text>
+              <g stroke="#9097a0" stroke-width="0.8" fill="none">
+                <line x1="-12" y1="-14" x2="-12" y2="-30"/>
+                <line x1="-7" y1="-14" x2="-7" y2="-30"/>
+                <line x1="-2" y1="-14" x2="-2" y2="-30"/>
+                <line x1="3" y1="-14" x2="3" y2="-30"/>
+                <line x1="8" y1="-14" x2="8" y2="-30"/>
+                <line x1="12" y1="-14" x2="12" y2="-30"/>
+              </g>
+              <line x1="-14" y1="-30" x2="14" y2="-30" stroke="#9097a0" stroke-width="0.8"/>
+              <rect x="78" y="2" width="14" height="10" fill="#c8ccd2" stroke="#80868f" stroke-width="0.5"/>
+              <text x="85" y="9" font-family="ui-monospace, monospace" font-size="4" text-anchor="middle" fill="#1a1a1f">DOCK</text>
+              <g fill="#00FFE5">
+                <circle cx="-50" cy="2" r="1.5"/>
+                <circle cx="-30" cy="2" r="1.5"/>
+                <circle cx="-10" cy="2" r="1.5"/>
+                <circle cx="32" cy="2" r="1.5"/>
+              </g>
+            </g>
+            <g font-family="ui-monospace, 'Berkeley Mono', monospace" font-size="9">
+              <text x="20" y="178" fill="#8A93A6">◉ Bonsai 1.7B</text>
+              <text x="120" y="178" fill="#00FFE5">3.03 t/s</text>
+              <text x="190" y="178" fill="#8A93A6">72°C / fan</text>
+            </g>
+            <g stroke="#8A93A6" stroke-width="0.6" opacity="0.4" fill="none">
+              <path d="M10,10 L10,20 M10,10 L20,10"/>
+              <path d="M270,10 L260,10 M270,10 L270,20"/>
+              <path d="M10,190 L10,180 M10,190 L20,190"/>
+              <path d="M270,190 L260,190 M270,190 L270,180"/>
+            </g>
+          </svg>
+        </div>
+        <div class="comp-head">
+          <span class="role">CORE</span>
+          <span class="verb">EDIT<span class="jp">編集する</span></span>
+        </div>
+        <p class="body">
+          <span class="hi">机の上に置かれた、 小さな脳。</span>
+          24 時間ぶんの信号と音声を、 Bonsai 1.7B が剪定する。 重要だけが残り、 GHOST.bin に圧縮される。 すべてオフライン。
+        </p>
+        <dl class="comp-spec">
+          <dt>board</dt><dd>rev.A6 / RK3566</dd>
+          <dt>engine</dt><dd>Bonsai 1.7B / 3.03 t/s</dd>
+          <dt>output</dt><dd>GHOST.bin ~14 KB</dd>
+          <dt>placed</dt><dd>desk / always-on</dd>
+        </dl>
+      </div>
+
+      <!-- ─── SHELL ─── -->
+      <div class="component">
+        <div class="num">03 / 03</div>
+        <div class="comp-img">
+          <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shell · 3D-printable enclosure variants">
+            <line x1="20" y1="22" x2="260" y2="22" stroke="#444a55" stroke-width="1"/>
+            <line x1="20" y1="22" x2="20" y2="14" stroke="#444a55"/>
+            <line x1="260" y1="22" x2="260" y2="14" stroke="#444a55"/>
+            <g transform="translate(140, 22)">
+              <rect x="-12" y="-2" width="24" height="12" fill="#80868f" stroke="#9097a0" stroke-width="0.5"/>
+              <polygon points="-2,10 2,10 0,16" fill="#80868f"/>
+              <line x1="0" y1="16" x2="0" y2="46" stroke="#FF1F8F" stroke-width="1.2" opacity="0.7"/>
+              <circle cx="0" r="1.6" fill="#FF1F8F">
+                <animate attributeName="cy" values="20;58;20" dur="2.2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="1;0;1" dur="2.2s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            <g font-family="ui-monospace, monospace" font-size="6" fill="#8A93A6" opacity="0.6">
+              <text x="148" y="28">X 140.0  Y 110.0  Z 1.20</text>
+            </g>
+            <g transform="translate(140, 110)">
+              <g transform="translate(-12, 8)" stroke="#FFAE00" stroke-opacity="0.55" fill="none" stroke-width="1">
+                <rect x="-58" y="-32" width="116" height="58"/>
+                <line x1="-58" y1="-12" x2="58" y2="-12"/>
+                <line x1="-58" y1="6" x2="58" y2="6"/>
+                <line x1="-20" y1="-32" x2="-20" y2="26"/>
+                <line x1="20" y1="-32" x2="20" y2="26"/>
+                <line x1="-58" y1="-32" x2="-20" y2="-12" stroke-opacity="0.3"/>
+                <line x1="20" y1="-12" x2="58" y2="-32" stroke-opacity="0.3"/>
+              </g>
+              <rect x="-58" y="-30" width="116" height="58" fill="rgba(0,255,229,0.04)"
+                    stroke="#00FFE5" stroke-opacity="0.85" stroke-width="1.5"/>
+              <g stroke="#00FFE5" stroke-width="1.5" fill="none">
+                <path d="M-58,-22 L-50,-22 L-50,-30"/>
+                <path d="M58,-22 L50,-22 L50,-30"/>
+                <path d="M-58,20 L-50,20 L-50,28"/>
+                <path d="M58,20 L50,20 L50,28"/>
+              </g>
+              <g transform="translate(8, -4)">
+                <ellipse rx="50" ry="24" fill="rgba(230,232,238,0.05)"
+                         stroke="#E6E8EE" stroke-opacity="0.85" stroke-width="1.5"/>
+              </g>
+              <g opacity="0.6" stroke="#8A93A6" stroke-width="0.5" fill="none" stroke-dasharray="2,2">
+                <rect x="-22" y="-10" width="44" height="20"/>
+              </g>
+            </g>
+            <g stroke="#444a55" stroke-dasharray="2,3" stroke-width="0.6">
+              <line x1="30" y1="160" x2="250" y2="160"/>
+              <line x1="30" y1="166" x2="250" y2="166"/>
+            </g>
+            <g font-family="ui-monospace, 'Berkeley Mono', monospace" font-size="9">
+              <text x="20" y="184" fill="#8A93A6">◉ STL</text>
+              <text x="80" y="184" fill="#00FFE5">CC-BY-SA</text>
+              <text x="170" y="184" fill="#8A93A6">4 official + ∞</text>
+            </g>
+            <g stroke="#8A93A6" stroke-width="0.6" opacity="0.4" fill="none">
+              <path d="M10,10 L10,20 M10,10 L20,10"/>
+              <path d="M270,10 L260,10 M270,10 L270,20"/>
+              <path d="M10,190 L10,180 M10,190 L20,190"/>
+              <path d="M270,190 L260,190 M270,190 L270,180"/>
+            </g>
+          </svg>
+        </div>
+        <div class="comp-head">
+          <span class="role">SHELL</span>
+          <span class="verb">DRESS<span class="jp">装う</span></span>
+        </div>
+        <p class="body">
+          <span class="hi">コアを包み、 手で持ち、 部屋に置く。</span>
+          機能は閉じる。 表現は開ける。 公式 4 種に加え、 STL データが公開され、 あなたが印刷し、 ハックし、 共有する。
+        </p>
+        <dl class="comp-spec">
+          <dt>format</dt><dd>STL / 3D-print</dd>
+          <dt>license</dt><dd>CC-BY-SA</dd>
+          <dt>variants</dt><dd>4 official + ∞</dd>
+          <dt>kept</dt><dd>hand / room</dd>
+        </dl>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── 3D DEVICE ─── -->
+<section id="device">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">04</span>  /  device  ·  CORE + SHELL in 3D</div>
+    <h2>コアは、 我々が閉じる。 シェルは、 あなたが決める。<span class="en">Closed core. Open shell. Print your own enclosure.</span></h2>
+
+    <div class="device-3d">
+      <div class="viewer">
+        <span class="label tl">CORE  ·  rev.A6</span>
+        <span class="label tr">SHELL  ·  <em id="shell-name" style="font-style:normal;color:var(--cyan)">MINIMAL</em></span>
+        <span class="label bl">drag to rotate</span>
+        <span class="label br">scale  ·  1:1.4</span>
+        <canvas id="device-3d"></canvas>
+      </div>
+
+      <div class="device-side">
+        <div class="core-spec">
+          <h4>CORE  ・  rev.A6 <span class="sub">/ closed by us</span></h4>
+          <table class="spec-table">
+            <tr><td>SoC</td><td>RK3566 (4× A55)</td></tr>
+            <tr><td>RAM</td><td>4 GB LPDDR4</td></tr>
+            <tr><td>Engine</td><td>Bonsai 1.7B <span class="acc">3.03 t/s</span></td></tr>
+            <tr><td>Sensor</td><td>COLMI R02 ・ BLE</td></tr>
+            <tr><td>Transfer</td><td>Ghost Dock ・ wired</td></tr>
+            <tr><td>OS</td><td>Trixie 26.2.0</td></tr>
+          </table>
+        </div>
+
+        <div class="shell-pick">
+          <h4>SHELL  ・  4 variants <span class="sub">/ printed by you</span></h4>
+          <div class="shell-list">
+            <button class="shell-btn active" data-shell="0">
+              <span class="name">MINIMAL</span>
+              <span class="desc">edge box / PLA</span>
+            </button>
+            <button class="shell-btn" data-shell="1">
+              <span class="name">ORGANIC</span>
+              <span class="desc">smooth oval / TPU</span>
+            </button>
+            <button class="shell-btn" data-shell="2">
+              <span class="name">和 / BONSAI</span>
+              <span class="desc">wood grain / bamboo</span>
+            </button>
+            <button class="shell-btn" data-shell="-1">
+              <span class="name">NAKED</span>
+              <span class="desc">core only / no shell</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="shell-msg">
+          STL データはすべて公開。 <a href="/shells">/shells</a> から DL し、 自分の 3D プリンタで出力できる。 投稿も歓迎。
+          <span class="en">All STL files open. Print, remix, share — Ghost Shells / CC-BY-SA.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">05</span>  /  how it works</div>
+    <h2>5 つのステップ。 全部、 デバイス内で完結する。<span class="en">Five steps  ·  fully on-device.</span></h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h4>WEAR</h4><p>COLMI R02 を日常装着</p></div>
+      <div class="step"><div class="n">2</div><h4>LISTEN</h4><p>Bonsai が音声と状況をデバイス内に記録</p></div>
+      <div class="step"><div class="n">3</div><h4>DISTILL</h4><p>重要度スコアで剪定 ・ 意味だけ残す</p></div>
+      <div class="step"><div class="n">4</div><h4>PRINT</h4><p>GHOST.bin が生成 (約 14.3 KB)</p></div>
+      <div class="step"><div class="n">5</div><h4>CHOOSE</h4><p>AI に渡すか、 ポケットに戻すか</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TRUST ─── -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">06</span>  /  four promises</div>
+    <h2>4 つの約束。 fine print ではなく、 本文として。<span class="en">Trust, written in the body, not the footer.</span></h2>
+    <div class="trust">
+      <div class="item">
+        <div class="check">[✓]</div>
+        <div>
+          <h5>LOCAL-FIRST</h5>
+          <p>Bonsai 1.7B はデバイス内で動作する。 抽出処理でクラウドに送られるデータはゼロ。</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="check">[✓]</div>
+        <div>
+          <h5>SELECTIVE</h5>
+          <p>何を渡すかは、 毎回あなたが選ぶ。 デフォルトの "全部送信" は存在しない。</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="check">[✓]</div>
+        <div>
+          <h5>OPEN</h5>
+          <p>GHOST v0.1 は公開仕様。 シェル STL も公開。 GitHub で読める・ DL できる。</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="check">[✓]</div>
+        <div>
+          <h5>PRE-MVP</h5>
+          <p>完成してから売るのではなく、 進捗を公開しながら作る。 失敗も同じ場所に書く。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TIMELINE ─── -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">07</span>  /  roadmap</div>
+    <h2>進捗を、 隠さず、 約束しすぎず。<span class="en">Public progress  ·  no roadmap inflation.</span></h2>
+    <div class="timeline">
+      <div class="row"><span class="when">2026 Q2</span><span class="what">GHOST v0.1 prototype  ·  HEADER 128B + TOC + sections</span><span class="state done">DONE</span></div>
+      <div class="row"><span class="when">2026 Q2</span><span class="what">Bonsai 1.7B Q1_0 on Orange Pi 3B  ·  3.03 t/s</span><span class="state done">DONE</span></div>
+      <div class="row"><span class="when">2026 Q2</span><span class="what">Adaptive watchpoints (A7)  ·  25/25 tests pass</span><span class="state done">DONE</span></div>
+      <div class="row"><span class="when">2026 Q3</span><span class="what">CORE rev.A6 確定設計  ・  Ghost Dock wired-first</span><span class="state wip">WIP</span></div>
+      <div class="row"><span class="when">2026 Q3</span><span class="what">SHELL 公式 4 種 STL 公開  ・  /shells β</span><span class="state wip">WIP</span></div>
+      <div class="row"><span class="when">2026 Q3</span><span class="what">ティザー公開 + ウェイトリスト</span><span class="state wip">WIP</span></div>
+      <div class="row"><span class="when">2026 Q4</span><span class="what">Pre-MVP β 配布</span><span class="state">PLANNED</span></div>
+      <div class="row"><span class="when">2027 Q1</span><span class="what">一般販売</span><span class="state">TBD</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WAITLIST ─── -->
+<section id="waitlist">
+  <div class="container waitlist">
+    <div class="section-eyebrow"><span class="num">08</span>  /  waitlist</div>
+    <h2>人類、 あなたの選択は？<span class="en">Spec is open today  ·  device ships in waves.</span></h2>
+    <form onsubmit="event.preventDefault();this.querySelector('input').blur();this.querySelector('button').textContent='THANK YOU';">
+      <input type="email" placeholder="you@machine.tld  ·  email only, nothing else" required>
+      <button type="submit">SUBMIT  ›</button>
+    </form>
+    <div class="sub">登録すると、 仕様改訂と Pre-MVP 配布の連絡が届く。 売り込みはしない。</div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="container">
+    <div>
+      ▓▒░ GHOST-PRINT  ·  rev.A6  ·  Pre-MVP / 2026<br>
+      Print your ghost.  ·  Made under a desk lamp.
+    </div>
+    <div class="links">
+      <a href="/device">device</a>
+      <a href="/shells">shells</a>
+      <a href="/spec">spec</a>
+      <a href="/protocol">protocol</a>
+      <a href="/bonsai">bonsai</a>
+      <a href="/open">open</a>
+      <a href="https://github.com/">github</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── 3D viewer ─── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+  const canvas = document.getElementById('device-3d');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  // ── scene ──
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+  camera.position.set(0, 1.4, 7.5);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // ── lighting ──
+  scene.add(new THREE.AmbientLight(0x303440, 0.6));
+
+  const cyan = new THREE.DirectionalLight(0x00FFE5, 1.4);
+  cyan.position.set(4, 3, 5);
+  scene.add(cyan);
+
+  const magenta = new THREE.PointLight(0xFF1F8F, 1.6, 14);
+  magenta.position.set(-4, -1.5, 3);
+  scene.add(magenta);
+
+  const top = new THREE.DirectionalLight(0xffffff, 0.45);
+  top.position.set(0, 6, 1);
+  scene.add(top);
+
+  // ── CORE: stacked PCB module ──
+  const core = new THREE.Group();
+
+  // 3 PCB-like plates
+  const pcbMat = new THREE.MeshStandardMaterial({color:0x102a26, metalness:0.45, roughness:0.55, emissive:0x002824, emissiveIntensity:0.35});
+  for (let i = 0; i < 3; i++) {
+    const board = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.06, 1.2), pcbMat);
+    board.position.y = (i - 1) * 0.22;
+    core.add(board);
+    // copper edge stripe
+    const stripe = new THREE.Mesh(
+      new THREE.BoxGeometry(1.71, 0.062, 0.05),
+      new THREE.MeshBasicMaterial({color:0x00FFE5, transparent:true, opacity:0.55})
+    );
+    stripe.position.set(0, board.position.y, 0.55);
+    core.add(stripe);
+  }
+
+  // SoC chip on top board
+  const soc = new THREE.Mesh(
+    new THREE.BoxGeometry(0.42, 0.06, 0.42),
+    new THREE.MeshStandardMaterial({color:0x18181c, metalness:0.7, roughness:0.4})
+  );
+  soc.position.set(-0.2, 0.27, 0);
+  core.add(soc);
+  // chip text representation - tiny cyan square
+  const chipMark = new THREE.Mesh(
+    new THREE.BoxGeometry(0.16, 0.005, 0.16),
+    new THREE.MeshBasicMaterial({color:0x00FFE5})
+  );
+  chipMark.position.set(-0.2, 0.301, 0);
+  core.add(chipMark);
+
+  // RAM chip
+  const ram = new THREE.Mesh(
+    new THREE.BoxGeometry(0.5, 0.05, 0.18),
+    new THREE.MeshStandardMaterial({color:0x222228, metalness:0.6, roughness:0.5})
+  );
+  ram.position.set(0.4, 0.27, 0.2);
+  core.add(ram);
+
+  // Heatsink (fins via thin boxes)
+  const heatBase = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.22, 0.22, 0.08, 16),
+    new THREE.MeshStandardMaterial({color:0x80868f, metalness:0.95, roughness:0.25})
+  );
+  heatBase.position.set(-0.2, 0.36, 0);
+  core.add(heatBase);
+  for (let i = 0; i < 7; i++) {
+    const fin = new THREE.Mesh(
+      new THREE.BoxGeometry(0.42, 0.18, 0.025),
+      new THREE.MeshStandardMaterial({color:0x9097a0, metalness:0.95, roughness:0.25})
+    );
+    fin.position.set(-0.2, 0.5, -0.18 + i * 0.06);
+    core.add(fin);
+  }
+
+  // 4 cyan LED dots
+  const ledMat = new THREE.MeshBasicMaterial({color:0x00FFE5});
+  for (let i = 0; i < 4; i++) {
+    const led = new THREE.Mesh(new THREE.SphereGeometry(0.04, 10, 10), ledMat);
+    led.position.set(-0.6 + i * 0.4, 0.06, 0.5);
+    core.add(led);
+  }
+
+  // Edge connector (Ghost Dock side)
+  const conn = new THREE.Mesh(
+    new THREE.BoxGeometry(0.5, 0.1, 0.16),
+    new THREE.MeshStandardMaterial({color:0xc8ccd2, metalness:0.95, roughness:0.18})
+  );
+  conn.position.set(0, -0.18, 0.65);
+  core.add(conn);
+
+  // Bottom standoff
+  const standoffGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.05, 8);
+  const standoffMat = new THREE.MeshStandardMaterial({color:0x444a55, metalness:0.7, roughness:0.4});
+  for (const [x,z] of [[-0.7,-0.45],[0.7,-0.45],[-0.7,0.45],[0.7,0.45]]) {
+    const s = new THREE.Mesh(standoffGeo, standoffMat);
+    s.position.set(x, -0.485, z);
+    core.add(s);
+  }
+
+  // ── SHELLS ──
+  const shells = [];
+
+  // [0] MINIMAL: edged box, semi-transparent, with cyan wire
+  {
+    const g = new THREE.Group();
+    const shape = new THREE.BoxGeometry(2.4, 1.4, 1.7);
+    const body = new THREE.Mesh(shape, new THREE.MeshStandardMaterial({
+      color:0x1A1F2B, metalness:0.4, roughness:0.4, transparent:true, opacity:0.32
+    }));
+    g.add(body);
+    const wire = new THREE.LineSegments(
+      new THREE.EdgesGeometry(shape),
+      new THREE.LineBasicMaterial({color:0x00FFE5, transparent:true, opacity:0.85})
+    );
+    g.add(wire);
+    shells.push(g); scene.add(g);
+  }
+
+  // [1] ORGANIC: smooth squashed sphere
+  {
+    const g = new THREE.Group();
+    const geo = new THREE.SphereGeometry(1.45, 48, 32);
+    geo.scale(1.0, 0.55, 0.78);
+    const body = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+      color:0xE6E8EE, metalness:0.45, roughness:0.25, transparent:true, opacity:0.28
+    }));
+    g.add(body);
+    // subtle equator highlight
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(1.42, 0.012, 8, 80),
+      new THREE.MeshBasicMaterial({color:0x00FFE5, transparent:true, opacity:0.5})
+    );
+    ring.rotation.x = Math.PI / 2;
+    ring.scale.set(1.0, 0.78, 1.0);
+    g.add(ring);
+    shells.push(g); scene.add(g);
+  }
+
+  // [2] 和 / BONSAI: wood-tone box with amber lattice
+  {
+    const g = new THREE.Group();
+    const shape = new THREE.BoxGeometry(2.3, 1.3, 1.65);
+    const body = new THREE.Mesh(shape, new THREE.MeshStandardMaterial({
+      color:0x4a3520, metalness:0.1, roughness:0.85, transparent:true, opacity:0.45
+    }));
+    g.add(body);
+    // hex/grid lattice via subdivided wireframe
+    const subdiv = new THREE.BoxGeometry(2.3, 1.3, 1.65, 6, 3, 4);
+    const wire = new THREE.LineSegments(
+      new THREE.WireframeGeometry(subdiv),
+      new THREE.LineBasicMaterial({color:0xFFAE00, transparent:true, opacity:0.7})
+    );
+    g.add(wire);
+    shells.push(g); scene.add(g);
+  }
+
+  // initial visibility: only minimal
+  let activeShell = 0;
+  shells.forEach((s, i) => s.visible = (i === activeShell));
+
+  // shell switch handler
+  const shellNameEl = document.getElementById('shell-name');
+  const shellNames = ['MINIMAL','ORGANIC','和 / BONSAI','NAKED'];
+  document.querySelectorAll('.shell-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.shell-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const idx = parseInt(btn.dataset.shell, 10);
+      shells.forEach((s, i) => s.visible = (i === idx));
+      activeShell = idx;
+      shellNameEl.textContent = idx === -1 ? 'NAKED' : shellNames[idx];
+    });
+  });
+
+  // ── interaction ──
+  let isDragging = false, prevX = 0, prevY = 0;
+  let rotY = 0.3, rotX = -0.15;
+  let lastInteract = 0;
+
+  const startDrag = (x, y) => {
+    isDragging = true; prevX = x; prevY = y;
+    lastInteract = Date.now();
+  };
+  const moveDrag = (x, y) => {
+    if (!isDragging) return;
+    rotY += (x - prevX) * 0.008;
+    rotX += (y - prevY) * 0.008;
+    rotX = Math.max(-0.9, Math.min(0.9, rotX));
+    prevX = x; prevY = y;
+    lastInteract = Date.now();
+  };
+  const endDrag = () => { isDragging = false; };
+
+  canvas.addEventListener('mousedown', e => startDrag(e.clientX, e.clientY));
+  window.addEventListener('mousemove', e => moveDrag(e.clientX, e.clientY));
+  window.addEventListener('mouseup', endDrag);
+  canvas.addEventListener('touchstart', e => {
+    if (e.touches[0]) startDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }, {passive:true});
+  window.addEventListener('touchmove', e => {
+    if (e.touches[0]) moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }, {passive:true});
+  window.addEventListener('touchend', endDrag);
+
+  // ── resize ──
+  function resize() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (w === 0 || h === 0) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(resize).observe(canvas);
+  } else {
+    window.addEventListener('resize', resize);
+  }
+  resize();
+
+  // ── render loop ──
+  // group everything for collective rotation
+  const root = new THREE.Group();
+  root.add(core);
+  shells.forEach(s => root.add(s));
+  scene.add(root);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    // auto-rotate after idle
+    if (!isDragging && Date.now() - lastInteract > 2500) {
+      rotY += 0.0035;
+    }
+    root.rotation.y = rotY;
+    root.rotation.x = rotX;
+    // breathing glow on LEDs via emissive cycling
+    const t = Date.now() * 0.002;
+    ledMat.opacity = 0.7 + 0.3 * Math.sin(t);
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// ── tiny console banner ──
+console.log('%c▓▒░ GHOST-PRINT ░▒▓','color:#00FFE5;font:14px/1 monospace');
+console.log('%cmockup v0.2  ·  CORE + SHELL  ·  drag the device to rotate','color:#8A93A6;font:11px/1 monospace');
+console.log('%c人類、 あなたの選択は？','color:#FF1F8F;font:13px/1 monospace');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Core component (rev.A6 PCB) — Bonsai 1.7B distillation engine">
+  <!-- background grid -->
+  <g stroke="#1A1F2B" stroke-width="0.5" opacity="0.55">
+    <line x1="0" y1="50" x2="280" y2="50"/>
+    <line x1="0" y1="100" x2="280" y2="100"/>
+    <line x1="0" y1="150" x2="280" y2="150"/>
+    <line x1="70" y1="0" x2="70" y2="200"/>
+    <line x1="140" y1="0" x2="140" y2="200"/>
+    <line x1="210" y1="0" x2="210" y2="200"/>
+  </g>
+
+  <!-- bonsai branches growing from chip -->
+  <g transform="translate(140, 92)" stroke="#00FFE5" fill="none" stroke-width="1" opacity="0.85" stroke-linecap="round">
+    <!-- trunk -->
+    <line x1="0" y1="0" x2="0" y2="-30"/>
+    <!-- mid branches -->
+    <line x1="0" y1="-15" x2="-18" y2="-30"/>
+    <line x1="0" y1="-15" x2="20" y2="-28"/>
+    <line x1="0" y1="-22" x2="-12" y2="-42"/>
+    <line x1="0" y1="-22" x2="14" y2="-44"/>
+    <!-- top crown -->
+    <line x1="0" y1="-30" x2="0" y2="-50"/>
+    <line x1="0" y1="-30" x2="-22" y2="-48"/>
+    <line x1="0" y1="-30" x2="22" y2="-50"/>
+    <line x1="-12" y1="-42" x2="-22" y2="-55"/>
+    <line x1="14" y1="-44" x2="24" y2="-58"/>
+  </g>
+
+  <!-- leaves: cyan = kept, magenta = high-importance, ghost dots = pruned -->
+  <g transform="translate(140, 92)" stroke="none">
+    <circle cx="-18" cy="-30" r="2" fill="#00FFE5"/>
+    <circle cx="20" cy="-28" r="2" fill="#00FFE5"/>
+    <circle cx="-12" cy="-42" r="2.6" fill="#FF1F8F"/>
+    <circle cx="14" cy="-44" r="2" fill="#00FFE5"/>
+    <circle cx="0" cy="-50" r="2.6" fill="#FF1F8F"/>
+    <circle cx="-22" cy="-48" r="1.5" fill="#00FFE5" opacity="0.7"/>
+    <circle cx="22" cy="-50" r="1.5" fill="#00FFE5" opacity="0.7"/>
+    <circle cx="-22" cy="-55" r="2.4" fill="#FF1F8F" opacity="0.85"/>
+    <circle cx="24" cy="-58" r="1.8" fill="#00FFE5"/>
+  </g>
+
+  <!-- pruned scattered fragments (drifting away) -->
+  <g fill="#8A93A6" opacity="0.45" font-family="ui-monospace, 'Berkeley Mono', monospace" font-size="6">
+    <text x="40" y="48">0.12 ✕</text>
+    <text x="220" y="40">0.04 ✕</text>
+    <text x="38" y="74">0.08 ✕</text>
+    <text x="234" y="68">0.07 ✕</text>
+  </g>
+
+  <!-- importance scores on kept branches -->
+  <g fill="#00FFE5" font-family="ui-monospace, 'Berkeley Mono', monospace" font-size="6" opacity="0.85">
+    <text x="155" y="62">0.92</text>
+    <text x="116" y="48">0.81</text>
+    <text x="170" y="48">0.74</text>
+  </g>
+
+  <!-- PCB stack: 3 boards side view -->
+  <g transform="translate(140, 105)">
+    <!-- bottom board -->
+    <rect x="-80" y="20" width="160" height="6" fill="#102a26" stroke="#00FFE5" stroke-opacity="0.5"/>
+    <rect x="-80" y="20" width="160" height="1.5" fill="#00FFE5" opacity="0.35"/>
+
+    <!-- middle board -->
+    <rect x="-80" y="8" width="160" height="6" fill="#102a26" stroke="#00FFE5" stroke-opacity="0.5"/>
+
+    <!-- top board (with chip) -->
+    <rect x="-80" y="-4" width="160" height="6" fill="#102a26" stroke="#00FFE5" stroke-opacity="0.5"/>
+
+    <!-- standoffs -->
+    <rect x="-78" y="-4" width="2" height="30" fill="#444a55"/>
+    <rect x="76" y="-4" width="2" height="30" fill="#444a55"/>
+
+    <!-- chip on top board -->
+    <rect x="-12" y="-12" width="24" height="8" fill="#1a1a1f" stroke="#00FFE5" stroke-width="0.5"/>
+    <text x="0" y="-6" text-anchor="middle" font-family="ui-monospace, monospace" font-size="4" fill="#00FFE5">RK3566</text>
+
+    <!-- heatsink fins (above chip) -->
+    <g stroke="#9097a0" stroke-width="0.8" fill="none">
+      <line x1="-12" y1="-14" x2="-12" y2="-30"/>
+      <line x1="-7" y1="-14" x2="-7" y2="-30"/>
+      <line x1="-2" y1="-14" x2="-2" y2="-30"/>
+      <line x1="3" y1="-14" x2="3" y2="-30"/>
+      <line x1="8" y1="-14" x2="8" y2="-30"/>
+      <line x1="12" y1="-14" x2="12" y2="-30"/>
+    </g>
+    <line x1="-14" y1="-30" x2="14" y2="-30" stroke="#9097a0" stroke-width="0.8"/>
+
+    <!-- Ghost Dock connector on right edge -->
+    <rect x="78" y="2" width="14" height="10" fill="#c8ccd2" stroke="#80868f" stroke-width="0.5"/>
+    <text x="85" y="9" font-family="ui-monospace, monospace" font-size="4" text-anchor="middle" fill="#1a1a1f">DOCK</text>
+
+    <!-- 4 cyan LEDs along top board front -->
+    <g fill="#00FFE5">
+      <circle cx="-50" cy="2" r="1.5"/>
+      <circle cx="-30" cy="2" r="1.5"/>
+      <circle cx="-10" cy="2" r="1.5"/>
+      <circle cx="32" cy="2" r="1.5"/>
+    </g>
+  </g>
+
+  <!-- HUD bottom labels -->
+  <g font-family="ui-monospace, 'Berkeley Mono', monospace" font-size="9">
+    <text x="20" y="178" fill="#8A93A6">◉ Bonsai 1.7B</text>
+    <text x="120" y="178" fill="#00FFE5">3.03 t/s</text>
+    <text x="190" y="178" fill="#8A93A6">72°C / fan</text>
+  </g>
+
+  <!-- corner brackets -->
+  <g stroke="#8A93A6" stroke-width="0.6" opacity="0.4" fill="none">
+    <path d="M10,10 L10,20 M10,10 L20,10"/>
+    <path d="M270,10 L260,10 M270,10 L270,20"/>
+    <path d="M10,190 L10,180 M10,190 L20,190"/>
+    <path d="M270,190 L260,190 M270,190 L270,180"/>
+  </g>
+</svg>

@@ -1,0 +1,227 @@
+GHOST-PRINTER C1 SPECIFICATION FILES
+================================================================================
+
+DIRECTORY: /sessions/magical-amazing-darwin/mnt/Ghost-print/ghost-printer-a1/specs/
+
+FILES AND DESCRIPTIONS:
+
+1. c1_disclosure_spec.py (27 KB)
+   ─────────────────────────────
+   PYTHON IMPLEMENTATION MODULE
+   
+   Contains:
+   - DisclosureCategory enum (8 categories)
+   - GranularityLevel enum (Full, Summary, Anonymized, Hidden)
+   - DisclosureScope dataclass + 5 pre-built templates
+   - CapabilityToken dataclass + TokenManager class
+   - PermissionGateway class (core access control logic)
+   - BoundaryCaseAnalysis class (7 documented boundary cases)
+   
+   Executable: Yes
+   Test suite: Included (run with: python3 c1_disclosure_spec.py)
+   
+   Usage:
+     from specs.c1_disclosure_spec import TokenManager, PermissionGateway
+     manager = TokenManager(secret_key="...")
+     token = manager.generate_token(...)
+     gateway = PermissionGateway(manager)
+     filtered = gateway.filter_soul_by_token(soul, token)
+
+
+2. c1_disclosure_spec.md (26 KB)
+   ──────────────────────────────
+   COMPREHENSIVE SPECIFICATION DOCUMENT
+   
+   Sections:
+   1. Overview & problem statement
+   2. 8 disclosure categories (definitions + examples)
+   3. 4 granularity levels (Full, Summary, Anonymized, Hidden)
+   4. 5 scope templates (Claude Personal, Work, Health, Minimal, Emergency)
+   5. 7 boundary cases (detailed decision rules)
+   6. Capability Token structure (JWT-compatible)
+   7. Permission Gateway implementation overview
+   8. UI/UX design (3 core features for management)
+   9. Technical details (signatures, anonymization, period limits)
+   10. Security considerations (threat model)
+   11. Future extensions (MPC, delegated disclosure, conditional scopes)
+   12. Summary table
+   13. References
+   
+   For: Human readers, product team, designers
+   Read time: 20-30 minutes
+
+
+3. integration_example.py (13 KB)
+   ──────────────────────────────
+   REFERENCE IMPLEMENTATION & DEMO
+   
+   Contains:
+   - SoulDisclosureManager class (high-level API)
+   - Demo: Multi-AI integration (Claude, Work Assistant, Health Coach)
+   - Token grant/revoke patterns
+   - System prompt generation from filtered SOUL
+   - Complete working example with sample SOUL data
+   
+   Executable: Yes (run with: python3 integration_example.py)
+   
+   Demonstrates:
+   - Granting different scopes to different AIs
+   - Fetching filtered SOUL for each AI
+   - Auto-generating personalized System Prompts
+   - Token revocation (emergency stop)
+
+
+4. README.md (6 KB)
+   ─────────────────
+   SPECS DIRECTORY OVERVIEW
+   
+   Sections:
+   - Current specifications (C1)
+   - Key components summary
+   - Python module usage
+   - Test instructions
+   - Integration points (with soul_engine, soul_to_prompt, UI)
+   - Security model summary
+   - Boundary cases reference table
+   - Future work roadmap
+   
+   For: Developers, integration engineers
+
+
+5. FILES.txt (this file)
+   ──────────────────────
+   File manifest and quick reference
+   
+
+================================================================================
+QUICK START
+================================================================================
+
+1. Review the spec:
+   - Read: c1_disclosure_spec.md (sections 1-5 for overview)
+   - Time: 15-20 minutes
+
+2. See it working:
+   - Run: python3 c1_disclosure_spec.py
+   - Shows token generation, SOUL filtering, boundary case analysis
+
+3. Integration example:
+   - Run: python3 integration_example.py
+   - Shows multi-AI integration, scope management, prompt generation
+
+4. Use in your code:
+   - from specs.c1_disclosure_spec import TokenManager, PermissionGateway
+   - See integration_example.py for patterns
+
+
+================================================================================
+KEY CONCEPTS AT A GLANCE
+================================================================================
+
+8 CATEGORIES:
+  core_identity, episodic_memory, emotional_state, behavioral_patterns,
+  health_vitals, location_movement, social_graph, interests_values
+
+4 GRANULARITY LEVELS:
+  Full → raw data
+  Summary → aggregated/averaged
+  Anonymized → PII removed, hashed
+  Hidden → non-disclosure
+
+5 SCOPE TEMPLATES:
+  Claude Personal (trusted partner, no location/health)
+  Work Assistant (work context only)
+  Health Coach (vitals + emotion, no social)
+  Minimal (core identity summary only)
+  Emergency (full data, 1-hour auto-expiry)
+
+CAPABILITY TOKEN:
+  - HMAC-SHA256 signed permission document
+  - JWT-compatible format
+  - Revocable, time-limited, one-time option
+  - Single source of truth for access control
+
+PERMISSION GATEWAY:
+  - Central access control (called on every SOUL access)
+  - Token verification → scope extraction → data filtering
+  - Applies granularity transformations
+  - Returns filtered SOUL with only permitted categories
+
+
+================================================================================
+BOUNDARY CASE SUMMARY
+================================================================================
+
+7 documented cases where data spans multiple categories:
+
+1. "仕事の会話から推測される健康状態" → HEALTH_VITALS rules apply
+2. "Aさんとの会話" → SOCIAL_GRAPH rules apply (person name/ID involved)
+3. "場所から推測される行動パターン" → LOCATION_MOVEMENT rules apply
+4. "睡眠ログ（感情 + 健康）" → HEALTH_VITALS rules apply
+5. "休日に一人でいる傾向" → SOCIAL_GRAPH rules apply
+6. "Spotifyプレイリスト（友人と共有）" → SOCIAL_GRAPH rules apply
+7. "推測される精神状態（複数弱信号）" → HEALTH_VITALS + EMOTIONAL_STATE apply
+
+DECISION RULE: Apply the most restrictive category's permissions
+
+
+================================================================================
+INTEGRATION ROADMAP
+================================================================================
+
+IMMEDIATE (This week):
+  1. Code review with team
+  2. Integrate PermissionGateway into soul_engine.py
+  3. Connect to soul_to_prompt.py
+
+SHORT-TERM (C2 phase):
+  1. Add audit logging
+  2. Extend token spec with nested permissions
+  3. Implement anonymous analytics
+
+MEDIUM-TERM (C3-C4):
+  1. Experiential testing (Claude conversations with different scopes)
+  2. Management UI design & implementation
+  3. Emergency scope with auto-expiry
+
+LONG-TERM (C5+):
+  1. Peer-to-peer consent protocol
+  2. Conditional scopes (time-based, context-based)
+  3. Multi-Party Computation for secure merges
+
+
+================================================================================
+FILE SIZES
+================================================================================
+
+c1_disclosure_spec.py       27 KB   (production-ready Python module)
+c1_disclosure_spec.md       26 KB   (detailed specification)
+integration_example.py      13 KB   (reference implementation)
+README.md                    6 KB   (overview)
+FILES.txt                    5 KB   (this manifest)
+
+Total: ~77 KB of specification + implementation
+
+
+================================================================================
+STATUS & NEXT STEPS
+================================================================================
+
+Current Status:
+  ✓ Design complete
+  ✓ Python implementation complete & tested
+  ✓ Specification documentation complete
+  ✓ Integration example implemented
+  ✓ All code modules execute successfully
+
+Ready for:
+  → Team review
+  → Integration with existing pipeline
+  → C2 phase planning (extended token spec, audit logging)
+  → C3 phase experiential testing
+
+Document prepared: 2026-04-15
+Track: Ghost-Printer C1 (Early Priority)
+
+
+================================================================================

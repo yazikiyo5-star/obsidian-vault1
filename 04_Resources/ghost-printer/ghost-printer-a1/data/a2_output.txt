@@ -1,0 +1,105 @@
+╔══════════════════════════════════════════════╗
+║  Ghost-Printer A2 — 抽出精度テスト           ║
+║  モデル: qwen3:14b                            ║
+║  テストケース: 10件                            ║
+╚══════════════════════════════════════════════╝
+
+[1/10] 内向的な一人時間...
+  ⏱  43.4s
+  🧠 性格次元: 2/3
+     ✅ extraversion = 0.30
+     ✅ openness = 0.70
+     ❌ independence: 未抽出
+  ✅ 感情: calm (期待: calm, contentment, peace...)
+  ✅ 重要度: 0.50 (期待: (0.1, 0.5))
+
+[2/10] チームでの成功体験...
+  ⏱  44.7s
+  🧠 性格次元: 2/3
+     ✅ extraversion = 0.82
+     ✅ agreeableness = 0.65
+     ❌ neuroticism: 未抽出
+  ✅ 感情: pride (期待: joy, pride, excitement...)
+  ✅ 重要度: 0.75 (期待: (0.5, 0.8))
+
+[3/10] 深夜の創作活動...
+  ⏱  66.1s
+  🧠 性格次元: 3/4
+     ✅ openness = 0.88
+     ✅ creativity = 0.78
+     ✅ independence = 0.82
+     ❌ risk_tolerance: 未抽出
+  ✅ 感情: excitement (期待: excitement, passion, flow...)
+  ✅ 重要度: 0.75 (期待: (0.5, 0.9))
+
+[4/10] 不安と締め切りのストレス...
+  ⏱  73.2s
+  🧠 性格次元: 2/2
+     ✅ neuroticism = 0.80
+     ✅ conscientiousness = 0.40
+  ✅ 感情: anxiety (期待: anxiety, stress, guilt...)
+  ✅ 重要度: 0.60 (期待: (0.5, 0.8))
+
+[5/10] 他者への共感...
+  ⏱  55.8s
+  🧠 性格次元: 2/3
+     ✅ empathy = 0.90
+     ✅ agreeableness = 0.85
+     ❌ extraversion: 未抽出
+  ✅ 感情: sadness (期待: sadness, empathy, compassion...)
+  ✅ 重要度: 0.60 (期待: (0.4, 0.7))
+
+[6/10] ルーティンの朝...
+  ⏱  52.6s
+  🧠 性格次元: 1/1
+     ✅ conscientiousness = 0.80
+  ✅ 感情: calm (期待: calm, neutral, contentment...)
+  ✅ 重要度: 0.20 (期待: (0.0, 0.3))
+
+[7/10] 冒険的な旅行...
+  ⏱  75.6s
+  🧠 性格次元: 3/3
+     ✅ openness = 0.80
+     ✅ risk_tolerance = 0.85
+     ✅ neuroticism = 0.45
+  ✅ 感情: excitement (期待: excitement, fear, thrill...)
+  ✅ 重要度: 0.80 (期待: (0.6, 0.9))
+
+[8/10] 知的好奇心...
+  ⏱  52.1s
+  🧠 性格次元: 2/3
+     ✅ curiosity = 0.90
+     ✅ openness = 0.85
+     ❌ conscientiousness: 未抽出
+  ✅ 感情: excitement (期待: curiosity, excitement, fascination...)
+  ✅ 重要度: 0.70 (期待: (0.3, 0.7))
+
+[9/10] 対立と自己主張...
+  ⏱  61.4s
+  🧠 性格次元: 1/3
+     ✅ independence = 0.70
+     ❌ agreeableness: 未抽出
+     ❌ risk_tolerance: 未抽出
+  ✅ 感情: pride (期待: determination, anxiety, pride...)
+  ✅ 重要度: 0.70 (期待: (0.5, 0.8))
+
+[10/10] 人生を変える決断...
+  ⏱  78.8s
+  🧠 性格次元: 3/3
+     ✅ risk_tolerance = 0.90
+     ✅ openness = 0.75
+     ✅ independence = 0.80
+  ✅ 感情: anxiety (期待: excitement, fear, determination...)
+  ✅ 重要度: 0.80 (期待: (0.8, 1.0))
+
+══════════════════════════════════════════════════
+📊 総合結果
+══════════════════════════════════════════════════
+  性格次元の方向一致率: 21/28 (75%)
+  感情カテゴリ一致率:   10/10 (100%)
+  重要度レンジ一致率:   10/10 (100%)
+  平均処理時間:         60.4s
+
+  🎯 総合精度: 92% — 良好。A3に進めます。
+
+  📄 詳細レポート: data/a2_accuracy_report.json

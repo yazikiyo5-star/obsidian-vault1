@@ -1,0 +1,18 @@
+[Unit]
+Description=Trigger Ghost-Printer Watch Point evolution every 6 hours
+Requires=ghost-printer-evolve.service
+
+[Timer]
+# 起動15分後に初回、以降6時間毎
+OnBootSec=15min
+OnUnitActiveSec=6h
+Unit=ghost-printer-evolve.service
+
+# システムがスリープしていた場合の補償実行
+Persistent=true
+
+# 多数のタイマーが同時発火しないようランダム遅延を加える
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,90 @@
+[Unit]
+Description=Ghost-Printer A1 — SOUL builder (mic listener + Watch Point evolution)
+Documentation=file:///home/pi/ghost-printer/SETUP.md
+After=network-online.target sound.target
+Wants=network-online.target
+
+# Wait for audio devices to be ready (USB mic enumeration)
+After=systemd-udev-settle.service
+Wants=systemd-udev-settle.service
+
+[Service]
+Type=simple
+
+# --- 実行ユーザー ---
+# rootでは動かさない。piユーザー配下の venv で動作。
+User=pi
+Group=pi
+
+# --- 作業ディレクトリ / 環境変数 ---
+WorkingDirectory=/home/pi/ghost-printer
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PATH=/home/pi/ghost-printer/.venv/bin:/usr/local/bin:/usr/bin:/bin
+Environment=HOME=/home/pi
+
+# --- メインコマンド ---
+# --duration 0 = 無限ループ（SIGTERMで終了）
+# --evolve-on-exit = 終了時に Watch Point 進化サイクルを1回走らせる
+# --whisper-bin / --whisper-model は環境に合わせて上書き推奨
+ExecStart=/home/pi/ghost-printer/.venv/bin/python /home/pi/ghost-printer/main.py \
+    --mic \
+    --duration 0 \
+    --evolve-on-exit \
+    --soul-path /home/pi/ghost-printer/data/soul.json \
+    --cortex-path /home/pi/ghost-printer/data/CORTEX.bin \
+    --whisper-bin /home/pi/ghost-printer/whisper.cpp/main \
+    --whisper-model /home/pi/ghost-printer/whisper.cpp/models/ggml-tiny-ja.bin
+
+# --- 定期的な Watch Point 進化 (6時間毎) は別タイマーで実行推奨 ---
+# systemd-timer で ghost-printer-evolve.timer を別途セットアップ
+
+# --- 終了シグナル ---
+# SIGTERM 受信でマイクループを抜け、SOUL をフラッシュして終了
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+# --- 自動再起動 ---
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=5
+StartLimitIntervalSec=300
+
+# --- リソース制限 ---
+# llama.cpp推論中にOOMで巻き込み事故を起こさないよう、メモリ上限を緩めに設定
+MemoryMax=6G
+CPUQuota=380%
+
+# Nice値を少しだけ下げて対話UIに優先度を譲る
+Nice=5
+IOSchedulingClass=best-effort
+IOSchedulingPriority=5
+
+# --- セキュリティ強化 ---
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/pi/ghost-printer/data /home/pi/ghost-printer/logs /tmp
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+# SPI/I2C/GPIO アクセスを許可 (W25Q シリーズ Flash 書き込みに必要)
+DeviceAllow=/dev/spidev0.0 rw
+DeviceAllow=/dev/spidev0.1 rw
+DeviceAllow=/dev/gpiochip0 rw
+DeviceAllow=/dev/gpiomem rw
+# USB オーディオ
+DeviceAllow=char-alsa rw
+SupplementaryGroups=audio spi gpio i2c
+
+# --- ログ ---
+StandardOutput=append:/home/pi/ghost-printer/logs/ghost-printer.log
+StandardError=append:/home/pi/ghost-printer/logs/ghost-printer.err.log
+SyslogIdentifier=ghost-printer
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghost-Printer — Product Design Document</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500&family=Space+Mono:wght@400;700&display=swap');
+  :root {
+    --bg: #09090d;
+    --s1: #0f0f16;
+    --s2: #141420;
+    --s3: #1a1a28;
+    --b: rgba(255,255,255,0.06);
+    --b2: rgba(255,255,255,0.12);
+    --b3: rgba(255,255,255,0.2);
+    --text: #eae8e1;
+    --dim: rgba(234,232,225,0.32);
+    --mid: rgba(234,232,225,0.58);
+    --gold: #d4a853;
+    --gold-dim: rgba(212,168,83,0.18);
+    --teal: #5ecfb8;
+    --teal-dim: rgba(94,207,184,0.12);
+    --purple: #9b8ec4;
+    --purple-dim: rgba(155,142,196,0.12);
+    --red: #e07b6a;
+    --red-dim: rgba(224,123,106,0.1);
+    --blue: #6ea8d4;
+    --green: #7ec47e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.6;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 48px;
+    border-bottom: 0.5px solid var(--b2);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,83,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-eyebrow {
+    font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 20px;
+  }
+  .cover-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 200;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .cover-title span { color: var(--gold); }
+  .cover-subtitle {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px; font-weight: 300;
+    color: var(--mid);
+    letter-spacing: 0.06em;
+    margin-bottom: 48px;
+  }
+  .cover-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 60px; }
+  .ctag {
+    padding: 4px 12px; border-radius: 2px; font-size: 9px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    border: 0.5px solid;
+  }
+  .cover-meta {
+    font-size: 10px; color: var(--dim);
+    display: grid; grid-template-columns: repeat(3, auto);
+    gap: 0; width: fit-content;
+  }
+  .cover-meta-item {
+    padding: 8px 20px 8px 0;
+    border-right: 0.5px solid var(--b2);
+    margin-right: 20px;
+  }
+  .cover-meta-item:last-child { border-right: none; margin-right: 0; }
+  .cover-meta-label { color: var(--dim); font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .cover-meta-val { color: var(--mid); margin-top: 2px; font-size: 10px; }
+
+  /* ── Layout ── */
+  .page { max-width: 920px; margin: 0 auto; padding: 72px 48px; }
+  .section { margin-bottom: 80px; }
+  .section-marker {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px;
+  }
+  .section-num {
+    font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--dim); white-space: nowrap;
+  }
+  .section-rule { flex: 1; height: 0.5px; background: var(--b2); }
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 26px; font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  /* ── Typography ── */
+  .lead {
+    font-size: 15px; color: var(--mid); line-height: 1.85;
+    max-width: 680px; margin-bottom: 28px;
+  }
+  .body-text {
+    font-size: 11px; color: var(--mid); line-height: 1.85;
+    max-width: 680px; margin-bottom: 16px;
+  }
+  .label {
+    font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim);
+    margin-bottom: 6px;
+  }
+
+  /* ── Tag ── */
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 2px;
+    font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    border: 0.5px solid;
+  }
+  .tag-gold { background: var(--gold-dim); color: var(--gold); border-color: rgba(212,168,83,0.35); }
+  .tag-teal { background: var(--teal-dim); color: var(--teal); border-color: rgba(94,207,184,0.3); }
+  .tag-purple { background: var(--purple-dim); color: var(--purple); border-color: rgba(155,142,196,0.3); }
+  .tag-red { background: var(--red-dim); color: var(--red); border-color: rgba(224,123,106,0.28); }
+  .tag-blue { background: rgba(110,168,212,0.1); color: var(--blue); border-color: rgba(110,168,212,0.3); }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--s1); border: 0.5px solid var(--b);
+    border-radius: 2px; padding: 20px 22px;
+  }
+  .card-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .card-body { font-size: 10px; color: var(--mid); line-height: 1.75; }
+
+  /* ── Grid utilities ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+  /* ── Problem → Solution ── */
+  .vs-grid {
+    display: grid; grid-template-columns: 1fr 48px 1fr; gap: 0;
+    align-items: center; margin-bottom: 28px;
+  }
+  .vs-box { border: 0.5px solid var(--b); border-radius: 2px; padding: 18px; }
+  .vs-box.before { border-color: rgba(224,123,106,0.2); background: rgba(224,123,106,0.03); }
+  .vs-box.after { border-color: rgba(94,207,184,0.25); background: rgba(94,207,184,0.03); }
+  .vs-arrow { text-align: center; color: var(--dim); font-size: 16px; }
+  .vs-label { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 10px; }
+  .vs-item { font-size: 10px; color: var(--mid); padding: 4px 0; border-bottom: 0.5px solid var(--b); display: flex; gap: 6px; }
+  .vs-item:last-child { border-bottom: none; }
+
+  /* ── Architecture layer ── */
+  .arch-layer {
+    display: grid; grid-template-columns: 180px 1fr;
+    border: 0.5px solid var(--b); overflow: hidden; border-radius: 2px;
+    margin-bottom: 8px;
+  }
+  .arch-label {
+    background: var(--s2); padding: 14px 16px;
+    border-right: 0.5px solid var(--b);
+  }
+  .arch-label-title { font-size: 10px; font-weight: 700; margin-bottom: 3px; }
+  .arch-label-sub { font-size: 8px; color: var(--dim); line-height: 1.4; }
+  .arch-content { padding: 14px 16px; background: var(--s1); }
+  .arch-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 4px 0; border-bottom: 0.5px solid var(--b);
+    font-size: 10px;
+  }
+  .arch-row:last-child { border-bottom: none; }
+  .arch-key { color: var(--dim); font-size: 9px; }
+  .arch-val { color: var(--mid); }
+  .arch-val.essential { color: var(--gold); font-weight: 700; }
+
+  /* ── Protocol stack ── */
+  .proto-row {
+    display: grid; grid-template-columns: 36px 160px 1fr 140px;
+    border-bottom: 0.5px solid var(--b); align-items: stretch;
+  }
+  .proto-row:last-child { border-bottom: none; }
+  .proto-n {
+    background: var(--s2); display: flex; align-items: center;
+    justify-content: center; font-size: 9px; color: var(--dim);
+    border-right: 0.5px solid var(--b);
+  }
+  .proto-name { padding: 10px 12px; font-size: 10px; font-weight: 700; border-right: 0.5px solid var(--b); display: flex; align-items: center; }
+  .proto-desc { padding: 10px 12px; font-size: 10px; color: var(--mid); line-height: 1.5; display: flex; align-items: center; }
+  .proto-tech { padding: 10px 12px; font-size: 9px; color: var(--dim); display: flex; align-items: center; justify-content: flex-end; white-space: nowrap; }
+
+  /* ── Disclosure matrix ── */
+  .disc-row {
+    display: grid; grid-template-columns: 160px 1fr;
+    border-bottom: 0.5px solid var(--b);
+  }
+  .disc-row:last-child { border-bottom: none; }
+  .disc-cat {
+    padding: 10px 12px; font-size: 10px; color: var(--mid);
+    border-right: 0.5px solid var(--b); background: var(--s2);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .disc-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .disc-scopes { padding: 10px 14px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .scope-tag { padding: 2px 8px; border-radius: 2px; font-size: 8px; font-weight: 700; letter-spacing: 0.08em; }
+  .scope-full { background: rgba(94,207,184,0.12); color: var(--teal); border: 0.5px solid rgba(94,207,184,0.3); }
+  .scope-partial { background: rgba(212,168,83,0.12); color: var(--gold); border: 0.5px solid rgba(212,168,83,0.3); }
+  .scope-none { background: rgba(224,123,106,0.08); color: var(--red); border: 0.5px solid rgba(224,123,106,0.2); }
+  .scope-anon { background: rgba(155,142,196,0.1); color: var(--purple); border: 0.5px solid rgba(155,142,196,0.25); }
+
+  /* ── Next steps (track cards) ── */
+  .track {
+    border: 0.5px solid var(--b2); border-radius: 2px;
+    overflow: hidden; margin-bottom: 16px;
+  }
+  .track-header {
+    padding: 20px 24px 16px;
+    display: flex; align-items: flex-start; gap: 16px;
+    border-bottom: 0.5px solid var(--b);
+  }
+  .track-num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 48px; font-weight: 200; line-height: 1;
+    opacity: 0.12; flex-shrink: 0; margin-top: -4px;
+  }
+  .track-head-content { flex: 1; }
+  .track-category { font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+  .track-title { font-family: 'Noto Serif JP', serif; font-size: 20px; font-weight: 300; color: var(--text); margin-bottom: 8px; }
+  .track-lead { font-size: 11px; color: var(--mid); line-height: 1.75; }
+  .track-body { padding: 20px 24px; }
+  .track-experiments { display: flex; flex-direction: column; gap: 8px; }
+  .experiment {
+    background: var(--s2); border: 0.5px solid var(--b);
+    border-radius: 2px; padding: 12px 14px;
+    display: grid; grid-template-columns: 24px 1fr auto;
+    gap: 10px; align-items: start;
+  }
+  .exp-n { font-size: 9px; color: var(--dim); margin-top: 1px; }
+  .exp-title { font-size: 10px; color: var(--text); font-weight: 700; margin-bottom: 4px; }
+  .exp-desc { font-size: 9px; color: var(--mid); line-height: 1.6; }
+  .exp-tag { white-space: nowrap; margin-top: 1px; }
+
+  /* ── Open questions ── */
+  .oq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .oq {
+    background: var(--s1); border: 0.5px solid var(--b);
+    border-radius: 2px; padding: 14px;
+  }
+  .oq-status {
+    font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 8px;
+    display: inline-block;
+    background: var(--red-dim); padding: 1px 6px; border-radius: 2px;
+    border: 0.5px solid rgba(224,123,106,0.3);
+  }
+  .oq-q { font-size: 11px; color: var(--text); margin-bottom: 6px; font-weight: 700; }
+  .oq-a { font-size: 9px; color: var(--mid); line-height: 1.6; }
+
+  /* ── Divider ── */
+  .hr { height: 0.5px; background: var(--b2); margin: 40px 0; }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 0.5px solid var(--b2);
+    padding: 32px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 9px; color: var(--dim); letter-spacing: 0.1em;
+  }
+
+  /* ── Soul format preview ── */
+  .code-block {
+    background: var(--s2); border: 0.5px solid var(--b);
+    border-radius: 2px; padding: 14px 16px;
+    font-size: 10px; line-height: 1.8;
+    overflow-x: auto;
+  }
+  .c-k { color: var(--teal); }
+  .c-v { color: var(--gold); }
+  .c-s { color: rgba(212,168,83,0.6); }
+  .c-d { color: var(--dim); }
+  .c-p { color: var(--purple); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<div class="cover">
+  <div class="cover-eyebrow">Product Design Document · Rev 0.1 · 2026</div>
+  <div class="cover-title">Ghost-<span>Printer</span></div>
+  <div class="cover-subtitle">あなたの魂を、静かに印刷し続けるデバイス</div>
+  <div class="cover-tags">
+    <span class="ctag" style="color:var(--gold);border-color:rgba(212,168,83,0.4)">Offline-First</span>
+    <span class="ctag" style="color:var(--teal);border-color:rgba(94,207,184,0.3)">Multi-Source AI</span>
+    <span class="ctag" style="color:var(--purple);border-color:rgba(155,142,196,0.3)">OSS Hardware</span>
+    <span class="ctag" style="color:var(--mid);border-color:var(--b2)">Soul Protocol</span>
+    <span class="ctag" style="color:var(--mid);border-color:var(--b2)">Selective Disclosure</span>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Status</div>
+      <div class="cover-meta-val">Concept / Pre-MVP</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Phase</div>
+      <div class="cover-meta-val">Design &amp; Experimentation</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Scope</div>
+      <div class="cover-meta-val">Personal → Ecosystem</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<div class="page">
+
+  <!-- 01 VISION -->
+  <div class="section">
+    <div class="section-marker">
+      <span class="section-num">01 — Vision</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="section-title">AIはまだ、あなたのことを知らない</div>
+
+    <p class="lead">
+      今日のAIとの対話は、毎回が「初対面」だ。どれだけ優秀なモデルでも、あなたの価値観・習慣・記憶・人生の文脈を持たずに答えを返している。Ghost-Printerはその根本を変える。
+    </p>
+
+    <div class="vs-grid">
+      <div class="vs-box before">
+        <div class="vs-label" style="color:var(--red)">現在 — 一元的・瞬間的</div>
+        <div class="vs-item"><span style="color:var(--dim)">›</span>テキスト入力だけがAIへのインプット</div>
+        <div class="vs-item"><span style="color:var(--dim)">›</span>文脈はその会話の中だけに存在</div>
+        <div class="vs-item"><span style="color:var(--dim)">›</span>毎回「自分」を説明しなおす</div>
+        <div class="vs-item"><span style="color:var(--dim)">›</span>データはクラウドに預けるしかない</div>
+        <div class="vs-item"><span style="color:var(--dim)">›</span>誰が何を見るか管理できない</div>
+      </div>
+      <div class="vs-arrow">→</div>
+      <div class="vs-box after">
+        <div class="vs-label" style="color:var(--teal)">Ghost-Printer — 多元的・継続的</div>
+        <div class="vs-item"><span style="color:var(--teal)">›</span>音声・行動・感情・場所が複合的に積み重なる</div>
+        <div class="vs-item"><span style="color:var(--teal)">›</span>長年の文脈がAIに渡せる</div>
+        <div class="vs-item"><span style="color:var(--teal)">›</span>AIはあなたを「知っている」状態で答える</div>
+        <div class="vs-item"><span style="color:var(--teal)">›</span>完全オフライン動作・ローカル保存</div>
+        <div class="vs-item"><span style="color:var(--teal)">›</span>何を誰に見せるか自分が決める</div>
+      </div>
+    </div>
+
+    <p class="body-text">
+      Ghost-Printerは「魂のプリンター」だ。日常の無数の瞬間から、その人固有のパターン・価値観・記憶を静かに抽出し、AIが読めるフォーマットに印刷し続ける。生成するのでなく、記録する。それがこのデバイスの本質。
+    </p>
+  </div>
+
+  <!-- 02 SOUL -->
+  <div class="section">
+    <div class="section-marker">
+      <span class="section-num">02 — SOUL Format</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="section-title">SOULとは何か</div>
+
+    <p class="lead">
+      SOULはAIが読み込むための人格ファイルだ。人間が読む必要はない。確率分布・埋め込みベクトル・隠れマルコフモデルで表現される「AI-native」なフォーマット。情報密度は自然言語の説明より桁違いに高い。
+    </p>
+
+    <div class="grid2" style="margin-bottom:20px;">
+      <div>
+        <div class="label">SOULの4層構造</div>
+        <div class="arch-layer">
+          <div class="arch-label">
+            <div class="arch-label-title" style="color:var(--gold)">Core Identity</div>
+            <div class="arch-label-sub">変化が遅い・安定した自己</div>
+          </div>
+          <div class="arch-content">
+            <div class="arch-row"><span class="arch-key">personality_prior</span><span class="arch-val">多次元Gauss分布 (128dim)</span></div>
+            <div class="arch-row"><span class="arch-key">values[]</span><span class="arch-val">Dirichlet分布</span></div>
+            <div class="arch-row"><span class="arch-key">communication_style</span><span class="arch-val">embedding vec</span></div>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-label">
+            <div class="arch-label-title" style="color:var(--teal)">Episodic Memory</div>
+            <div class="arch-label-sub">3層: 直近・圧縮・蒸留</div>
+          </div>
+          <div class="arch-content">
+            <div class="arch-row"><span class="arch-key">recent (30日)</span><span class="arch-val">vec[512] + weight</span></div>
+            <div class="arch-row"><span class="arch-key">compressed (180日)</span><span class="arch-val">GMM centroids</span></div>
+            <div class="arch-row"><span class="arch-key">distilled (180日+)</span><span class="arch-val">→ prior に溶ける</span></div>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-label">
+            <div class="arch-label-title" style="color:var(--purple)">Semantic Map</div>
+            <div class="arch-label-sub">興味・人間関係・スキル</div>
+          </div>
+          <div class="arch-content">
+            <div class="arch-row"><span class="arch-key">topic_dirichlet</span><span class="arch-val">float32[512]</span></div>
+            <div class="arch-row"><span class="arch-key">people_graph</span><span class="arch-val">sparse adj matrix</span></div>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-label">
+            <div class="arch-label-title" style="color:var(--red)">Temporal Patterns</div>
+            <div class="arch-label-sub">行動の時系列リズム</div>
+          </div>
+          <div class="arch-content">
+            <div class="arch-row"><span class="arch-key">hmm_states</span><span class="arch-val">隠れマルコフモデル</span></div>
+            <div class="arch-row"><span class="arch-key">circadian[24]</span><span class="arch-val">時間帯別エネルギー</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="label" style="margin-bottom:6px;">ベイズ的忘却 — エピソードが性格に溶ける</div>
+        <div class="card" style="margin-bottom:10px;">
+          <div class="card-body">
+            記憶を「消す」のではなく、重要度の低いエピソードは時間とともに確率分布の更新として吸収される。繰り返し観測されたパターンは σ（不確かさ）が縮小し、「性格特性」として定着する。
+          </div>
+        </div>
+        <div class="code-block">
+<span class="c-d"># エピソードが積み重なるにつれて</span>
+<span class="c-d"># 性格の確信度が上がる</span>
+
+<span class="c-k">Day 1</span>  introversion: <span class="c-v">μ=0.72, σ=0.28</span>
+<span class="c-k">Day 30</span> introversion: <span class="c-v">μ=0.72, σ=0.14</span>
+<span class="c-k">Day 180</span> introversion: <span class="c-v">μ=0.72, σ=0.06</span>
+
+<span class="c-d"># エピソード削除。性格として定着。</span>
+<span class="c-d"># SOULファイルはむしろ軽くなる。</span>
+        </div>
+        <div class="label" style="margin-top:14px;margin-bottom:6px;">ローカルモデルスタック（完全オフライン）</div>
+        <div class="arch-layer">
+          <div class="arch-label"><div class="arch-label-title" style="color:var(--green)">Whisper tiny</div><div class="arch-label-sub">39 MB</div></div>
+          <div class="arch-content"><div class="arch-row"><span class="arch-key">役割</span><span class="arch-val">音声 → テキスト</span></div></div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-label"><div class="arch-label-title" style="color:var(--teal)">Bonsai 1.7B</div><div class="arch-label-sub">240 MB</div></div>
+          <div class="arch-content"><div class="arch-row"><span class="arch-key">役割</span><span class="arch-val">意味抽出 / 重要度判定</span></div></div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-label"><div class="arch-label-title" style="color:var(--gold)">MiniLM-L6</div><div class="arch-label-sub">22 MB</div></div>
+          <div class="arch-content"><div class="arch-row"><span class="arch-key">役割</span><span class="arch-val">埋め込みベクトル生成</span></div></div>
+        </div>
+        <div style="font-size:9px;color:var(--dim);margin-top:6px;">合計 〜 300MB · Pi 5 2GB で余裕で動作</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 HARDWARE -->
+  <div class="section">
+    <div class="section-marker">
+      <span class="section-num">03 — Hardware</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="section-title">Core + Shell アーキテクチャ</div>
+
+    <p class="lead">Coreは販売品。Shellはコミュニティが育てるOSS。機能を絞ったCoreが信頼の根拠になる。</p>
+
+    <div class="grid2" style="margin-bottom:20px;align-items:start;">
+      <div>
+        <div class="label">Core — 最小機能セット（販売品）</div>
+        <div style="border:1px solid rgba(212,168,83,0.4);border-radius:2px;padding:20px;background:rgba(212,168,83,0.03);">
+          <div class="arch-row"><span class="arch-key">SoC</span><span class="arch-val essential">Cortex-A53 class</span></div>
+          <div class="arch-row"><span class="arch-key">RAM</span><span class="arch-val essential">512MB〜1GB</span></div>
+          <div class="arch-row"><span class="arch-key">Storage</span><span class="arch-val essential">eMMC 8GB</span></div>
+          <div class="arch-row"><span class="arch-key">Battery IC</span><span class="arch-val essential">込み</span></div>
+          <div class="arch-row"><span class="arch-key">BLE 5.0</span><span class="arch-val essential">込み</span></div>
+          <div class="arch-row"><span class="arch-key">Microphone</span><span class="arch-val essential">I2S MEMS 1基</span></div>
+          <div class="arch-row"><span class="arch-key">Connector</span><span class="arch-val">USB-C or Pogo ×4</span></div>
+          <div class="arch-row"><span class="arch-key">Display</span><span class="arch-val" style="color:var(--red)">なし</span></div>
+          <div class="arch-row"><span class="arch-key">Camera / GPS</span><span class="arch-val" style="color:var(--red)">なし → Shell へ</span></div>
+          <div style="font-size:9px;color:var(--dim);margin-top:12px;padding-top:10px;border-top:0.5px solid var(--b);line-height:1.6;">
+            機能を絞ることが攻撃面の縮小になる。<br>信頼の根拠はシンプルさにある。
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="label">Shell — OSS / 3Dプリンタ対応</div>
+        <div class="grid2" style="gap:8px;">
+          <div class="card">
+            <div class="card-title">⌚ Wearable</div>
+            <div class="card-body">常時装着。Pogo Pinドック充電。心拍・IMU・GPSをShellに搭載。</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🖥 Desk</div>
+            <div class="card-body">据え置き。USB-C接続。会議・作業をパッシブに記録。環境センサーも可。</div>
+          </div>
+          <div class="card">
+            <div class="card-title">💎 Pendant</div>
+            <div class="card-body">アクセサリー型。Pogo Pin専用小型ドック。最小存在感を目指す。</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🚗 Car</div>
+            <div class="card-body">車内常設。USB-C電源。移動・通勤パターンを記録。</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;padding:12px;background:var(--s2);border-radius:2px;border:0.5px solid var(--b);">
+          <div class="label">Soul Dock（充電 = 同期 = 認証）</div>
+          <div style="font-size:10px;color:var(--mid);line-height:1.7;margin-top:4px;">
+            毎晩ドックに置くだけで全Coreが高帯域同期。新しいCoreを挿すだけで信頼確立が完了する。ドック自体がHome Coreとして機能する。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="label">Core-to-Core 信頼確立（有線ファースト）</div>
+    <div style="display:flex;gap:0;border:0.5px solid var(--b);border-radius:2px;overflow:hidden;margin-bottom:8px;">
+      <div style="flex:1;padding:14px;background:var(--s1);border-right:0.5px solid var(--b);">
+        <div style="font-size:8px;color:var(--dim);letter-spacing:0.2em;margin-bottom:5px;">STEP 1</div>
+        <div style="font-size:10px;font-weight:700;color:var(--text);margin-bottom:4px;">物理接続</div>
+        <div style="font-size:9px;color:var(--mid);">USB-C / Pogo で接続。物理的所持が証明になる。</div>
+      </div>
+      <div style="flex:1;padding:14px;background:var(--s1);border-right:0.5px solid var(--b);">
+        <div style="font-size:8px;color:var(--dim);letter-spacing:0.2em;margin-bottom:5px;">STEP 2</div>
+        <div style="font-size:10px;font-weight:700;color:var(--text);margin-bottom:4px;">ECDH鍵交換</div>
+        <div style="font-size:9px;color:var(--mid);">有線上でMITM不可能な鍵交換を実行。</div>
+      </div>
+      <div style="flex:1;padding:14px;background:var(--s1);border-right:0.5px solid var(--b);">
+        <div style="font-size:8px;color:var(--dim);letter-spacing:0.2em;margin-bottom:5px;">STEP 3</div>
+        <div style="font-size:10px;font-weight:700;color:var(--text);margin-bottom:4px;">初回フルマージ</div>
+        <div style="font-size:9px;color:var(--mid);">USB 2.0 (480Mbps) で SOULを全量同期。</div>
+      </div>
+      <div style="flex:1;padding:14px;background:rgba(94,207,184,0.03);border:none;">
+        <div style="font-size:8px;color:var(--teal);letter-spacing:0.2em;margin-bottom:5px;">以降</div>
+        <div style="font-size:10px;font-weight:700;color:var(--teal);margin-bottom:4px;">BLE 差分同期</div>
+        <div style="font-size:9px;color:var(--mid);">信頼済み。近づくと自動で差分のみ同期。</div>
+      </div>
+    </div>
+    <div style="font-size:9px;color:var(--dim);">複数CoreはCRDT（競合なし自動マージ）で同一SOULに収束。オフライン中の更新も矛盾なく統合される。</div>
+  </div>
+
+  <!-- 04 Soul Protocol -->
+  <div class="section">
+    <div class="section-marker">
+      <span class="section-num">04 — Soul Protocol</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="section-title">オープンプロトコルとしての拡張性</div>
+    <p class="lead">Core同士・サードパーティアプリ・外部AIが接続できるオープンスタック。ActivityPubのPersonal Identity版。</p>
+
+    <div style="border:0.5px solid rgba(94,207,184,0.2);border-radius:2px;overflow:hidden;margin-bottom:16px;">
+      <div class="proto-row" style="background:var(--s2);">
+        <div class="proto-n" style="color:var(--purple)">L5</div>
+        <div class="proto-name" style="color:var(--purple)">Plugin Layer</div>
+        <div class="proto-desc">任意のデバイス・アプリがSOULにデータを寄与できる拡張I/F。OSS仕様として公開。3種類（Source / Lens / Bridge）。</div>
+        <div class="proto-tech">soul-plugin spec</div>
+      </div>
+      <div class="proto-row">
+        <div class="proto-n" style="color:var(--teal)">L4</div>
+        <div class="proto-name" style="color:var(--teal)">Merge Layer</div>
+        <div class="proto-desc">複数観測をBayesian fusionで統合。矛盾は「両立する複合状態」として保存。</div>
+        <div class="proto-tech">CRDT + Bayes</div>
+      </div>
+      <div class="proto-row">
+        <div class="proto-n" style="color:var(--gold)">L3</div>
+        <div class="proto-name" style="color:var(--gold)">Permission Layer</div>
+        <div class="proto-desc">Capability Tokenによるスコープ制御。カテゴリ・期間・粒度の3軸で開示範囲を設定。</div>
+        <div class="proto-tech">capability tokens</div>
+      </div>
+      <div class="proto-row">
+        <div class="proto-n" style="color:var(--blue)">L2</div>
+        <div class="proto-name" style="color:var(--blue)">Sync Layer</div>
+        <div class="proto-desc">SOUL fragmentの差分同期プロトコル。有線480Mbps（初回）・BLE 1Mbps（差分）。</div>
+        <div class="proto-tech">delta-sync</div>
+      </div>
+      <div class="proto-row">
+        <div class="proto-n" style="color:var(--green)">L1</div>
+        <div class="proto-name" style="color:var(--green)">Discovery Layer</div>
+        <div class="proto-desc">BLEアドバタイジングで近傍Coreを発見。soul_idハッシュで同一人物のCoreを識別。</div>
+        <div class="proto-tech">BLE adv</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 SELECTIVE DISCLOSURE -->
+  <div class="section">
+    <div class="section-marker">
+      <span class="section-num">05 — Selective Disclosure</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="section-title">選択的自己開示</div>
+    <p class="lead">誰に・何を・どこまで見せるかを自分が決める。開示はカテゴリ・期間・粒度の3軸で制御される。</p>
+
+    <div class="grid2" style="margin-bottom:20px;align-items:start;">
+      <div>
+        <div class="label">開示スコープ（Claude Personalの例）</div>
+        <div style="border:0.5px solid var(--b);border-radius:2px;overflow:hidden;">
+          <div class="disc-row">
+            <div class="disc-cat"><div class="disc-dot" style="background:var(--gold)"></div>性格・価値観</div>
+            <div class="disc-scopes"><span class="scope-tag scope-full">Full</span><span style="font-size:9px;color:var(--mid)">コアアイデンティティ</span></div>
+          </div>
+          <div class="disc-row">
+            <div class="disc-cat"><div class="disc-dot" style="background:var(--teal)"></div>エピソード記憶</div>
+            <div class="disc-scopes"><span class="scope-tag scope-partial">直近90日</span></div>
+          </div>
+          <div class="disc-row">
+            <div class="disc-cat"><div class="disc-dot" style="background:var(--purple)"></div>行動パターン</div>
+            <div class="disc-scopes"><span class="scope-tag scope-full">Full</span></div>
+          </div>
+          <div class="disc-row">
+            <div class="disc-cat"><div class="disc-dot" style="background:var(--red)"></div>バイタル・健康</div>
+            <div class="disc-scopes"><span class="scope-tag scope-partial">サマリーのみ</span></div>
+          </div>
+          <div class="disc-row">
+            <div class="disc-cat"><div class="disc-dot" style="background:var(--blue)"></div>位置・行動履歴</div>
+            <div class="disc-scopes"><span class="scope-tag scope-none">非開示</span></div>
+          </div>
+          <div class="disc-row">
+            <div class="disc-cat"><div class="disc-dot" style="background:var(--green)"></div>人間関係グラフ</div>
+            <div class="disc-scopes"><span class="scope-tag scope-anon">匿名化</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="label">外部AIへのインターフェース</div>
+        <div class="code-block" style="margin-bottom:12px;">
+<span class="c-d"># Permission API エンドポイント</span>
+
+<span class="c-k">GET</span> /soul/summary        <span class="c-d"># 認証不要</span>
+<span class="c-k">GET</span> /soul/identity       <span class="c-d"># Token必須</span>
+<span class="c-k">GET</span> /soul/memory<span class="c-p">?scope=</span> <span class="c-d"># スコープ制限</span>
+<span class="c-k">GET</span> /soul/context/now   <span class="c-d"># 直近の状態</span>
+        </div>
+        <div class="label">Claude連携 System Prompt（自動生成）</div>
+        <div class="code-block">
+<span class="c-d"># Ghost-Printer が自動生成</span>
+
+あなたは {name} のアシスタントです。
+以下はその人のSOULデータです：
+
+<span class="c-k">personality</span>: <span class="c-v">{soul.identity}</span>
+<span class="c-k">recent_context</span>: <span class="c-v">{soul.context}</span>
+<span class="c-k">patterns</span>: <span class="c-v">{soul.patterns}</span>
+
+開示スコープ外の情報は含まれていません。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ NEXT STEPS ══════ -->
+  <div class="section">
+    <div class="section-marker">
+      <span class="section-num">06 — Next Steps</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="section-title">次に進むべき3つのトラック</div>
+    <p class="lead">Ghost-Printerを実装に向けて進めるにあたり、並行して進められる実験・設計のトラックを定義する。</p>
+
+    <!-- Track A -->
+    <div class="track" style="border-color:rgba(94,207,184,0.3);">
+      <div class="track-header" style="background:rgba(94,207,184,0.03);">
+        <div class="track-num" style="color:var(--teal)">A</div>
+        <div class="track-head-content">
+          <div class="track-category" style="color:var(--teal)">Track A — Experimentation</div>
+          <div class="track-title">SOUL抽出方法の実験</div>
+          <div class="track-lead">どのような情報をどのように扱うか。データパイプラインとフォーマットを実際に動かして検証する。ハードウェアは不要、PC上でプロトタイプ可能。</div>
+        </div>
+      </div>
+      <div class="track-body">
+        <div class="track-experiments">
+          <div class="experiment">
+            <div class="exp-n">A1</div>
+            <div>
+              <div class="exp-title">手動入力 → SOUL生成パイプライン</div>
+              <div class="exp-desc">日記・メモをテキストで入力 → Bonsai 1.7B が感情・重要度・価値観を抽出 → .soul ファイルに書き込む。最もシンプルなループを最初に動かす。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-teal">Week 1-2</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">A2</div>
+            <div>
+              <div class="exp-title">抽出プロンプトの精度検証</div>
+              <div class="exp-desc">「カフェで一人でコーヒーを飲んだ」→「内向性: 0.72」を引き出せるか。重要度スコアの妥当性を人手で評価。プロンプトをイテレーションする。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-teal">Week 2-3</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">A3</div>
+            <div>
+              <div class="exp-title">多元インプットの統合実験</div>
+              <div class="exp-desc">音声（Whisper）+ 位置（手動）+ 時刻を束ねたコンテキストをBonsaiに渡す。単一インプットと比較してSOULの質がどれだけ向上するかを測定。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-gold">Week 3-4</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">A4</div>
+            <div>
+              <div class="exp-title">ベイズ的忘却アルゴリズムの実装</div>
+              <div class="exp-desc">エピソードの重みを時間減衰させ、personality priorに吸収するロジックを実装。「記憶を消す」ではなく「溶け込む」が正しく動くか検証。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-gold">Week 4-5</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">A5</div>
+            <div>
+              <div class="exp-title">Claude連携テスト</div>
+              <div class="exp-desc">生成したSOULをSystem Promptに変換 → Claudeに読み込ませる。「このSOULを知っているClaudeは何が違うか」を体験として検証。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-purple">Week 5-6</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track B -->
+    <div class="track" style="border-color:rgba(212,168,83,0.3);">
+      <div class="track-header" style="background:rgba(212,168,83,0.03);">
+        <div class="track-num" style="color:var(--gold)">B</div>
+        <div class="track-head-content">
+          <div class="track-category" style="color:var(--gold)">Track B — Hardware Design</div>
+          <div class="track-title">物理的な基盤・製品の設計</div>
+          <div class="track-lead">CoreボードとShellの設計。OSSとして公開できる形にする。まずは既製品（Raspberry Pi）で動作を確認し、徐々に専用基板へ移行する。</div>
+        </div>
+      </div>
+      <div class="track-body">
+        <div class="track-experiments">
+          <div class="experiment">
+            <div class="exp-n">B1</div>
+            <div>
+              <div class="exp-title">Pi Zero 2W でのスタック動作確認</div>
+              <div class="exp-desc">Whisper tiny + Bonsai 1.7B + MiniLM が Pi Zero 2W（RAM 512MB）で実用的に動くか検証。メモリ・スワップ・速度を計測。必要ならPi 5（2GB）に変更。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-teal">Early</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">B2</div>
+            <div>
+              <div class="exp-title">バッテリーHATの選定と電力設計</div>
+              <div class="exp-desc">Tier1（常時低消費）・Tier2（トリガー起動）・Tier3（バッチ処理）の消費電力を実測。バッテリー容量と実稼働時間を算出する。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-gold">Mid</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">B3</div>
+            <div>
+              <div class="exp-title">Soul Dockのプロトタイプ（3Dプリンタ）</div>
+              <div class="exp-desc">Pogo Pin 4極（USB 2.0互換）を使ったドックを設計・印刷。Coreを置くだけで充電・同期が完了する体験を作る。STLファイルをGitHubで公開。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-gold">Mid</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">B4</div>
+            <div>
+              <div class="exp-title">Coreボードの回路設計（KiCad）</div>
+              <div class="exp-desc">Pi Compute Module相当の専用基板設計。SoC・電源IC・BLEモジュール・MEMS Micの最小構成を回路図に落とす。Gerberファイルを公開。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-purple">Later</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">B5</div>
+            <div>
+              <div class="exp-title">Shell設計仕様の策定とコミュニティ公開</div>
+              <div class="exp-desc">CoreへのShell取り付け規格（機械的・電気的インターフェース）を仕様化。Printablesに第1世代Shellデザインを投稿してコミュニティを立ち上げる。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-purple">Later</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track C -->
+    <div class="track" style="border-color:rgba(155,142,196,0.3);">
+      <div class="track-header" style="background:rgba(155,142,196,0.03);">
+        <div class="track-num" style="color:var(--purple)">C</div>
+        <div class="track-head-content">
+          <div class="track-category" style="color:var(--purple)">Track C — Disclosure Design</div>
+          <div class="track-title">選択的自己開示の設計</div>
+          <div class="track-lead">何をどのように分け、外部AIに共有するかを設計する。これはGhost-Printerの「信頼の哲学」そのものであり、最も慎重に考えるべきトラック。</div>
+        </div>
+      </div>
+      <div class="track-body">
+        <div class="track-experiments">
+          <div class="experiment">
+            <div class="exp-n">C1</div>
+            <div>
+              <div class="exp-title">開示カテゴリの定義と分類実験</div>
+              <div class="exp-desc">SOUL内のデータをどのカテゴリに分けるかを決める。「性格」「記憶」「行動」「健康」「関係」の5軸が基本。カテゴリ境界が曖昧なケース（例：習慣は性格か行動か）を洗い出す。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-teal">Early</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">C2</div>
+            <div>
+              <div class="exp-title">Capability Token仕様の設計</div>
+              <div class="exp-desc">外部AIがSOUL APIにアクセスする際のトークン設計。スコープ（カテゴリ）・期間・粒度（全文 / サマリー / 匿名）を組み合わせて表現できるフォーマットを定義する。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-gold">Mid</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">C3</div>
+            <div>
+              <div class="exp-title">「どこまで見せると何が変わるか」の体験検証</div>
+              <div class="exp-desc">開示スコープを変えながらClaudeと会話し、どこまで共有すると何が変わるかを体験的に記録する。「健康データを加えると提案の質が変わるか」など具体的なケースで検証。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-gold">Mid</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">C4</div>
+            <div>
+              <div class="exp-title">管理UIの設計（スマホアプリ）</div>
+              <div class="exp-desc">Coreに画面がないため、開示設定はスマホアプリで行う。「AIごとにスコープを設定」「一時的な共有（今日だけ）」「緊急停止（全開示を即時取り消す）」の3機能を最初に設計する。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-purple">Mid-Late</span></div>
+          </div>
+          <div class="experiment">
+            <div class="exp-n">C5</div>
+            <div>
+              <div class="exp-title">他者間共有プロトコルの設計</div>
+              <div class="exp-desc">パートナー・家族・医師など、別の人間にSOULの一部を共有するフロー設計。「同意の取得」「開示範囲の合意」「取り消し」をどう設計するかは、単なるAPI設計を超えた哲学的判断を含む。</div>
+            </div>
+            <div class="exp-tag"><span class="tag tag-purple">Later</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 Open Questions -->
+  <div class="section">
+    <div class="section-marker">
+      <span class="section-num">07 — Open Questions</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="section-title">未解決の設計上の問い</div>
+    <div class="oq-grid">
+      <div class="oq">
+        <span class="oq-status">未決</span>
+        <div class="oq-q">マイクの常時起動は法的・倫理的に許容されるか？</div>
+        <div class="oq-a">「VADで検知のみ・録音はしない」か「ユーザーが明示的に開始」かを決める必要がある。地域によって法的要件が異なる。</div>
+      </div>
+      <div class="oq">
+        <span class="oq-status">未決</span>
+        <div class="oq-q">BLE帯域でSOUL差分同期は現実的か？</div>
+        <div class="oq-a">BLEは実効1Mbps程度。SOULが大きくなると転送がボトルネックに。差分設計の精度と、有線フルマージの頻度で対応する想定。</div>
+      </div>
+      <div class="oq">
+        <span class="oq-status">要議論</span>
+        <div class="oq-q">「デジタル人格」としての利用で生じる倫理的問題</div>
+        <div class="oq-a">死後のSOULはどうなるか。AIがその人を「演じる」ことの境界はどこか。プロダクトとして早期に立場を明確にすべきトピック。</div>
+      </div>
+      <div class="oq">
+        <span class="oq-status">要設計</span>
+        <div class="oq-q">CoreのOSとソフトウェアのライセンス</div>
+        <div class="oq-a">BonsaiはApache 2.0。Whisper / MiniLMも開放的ライセンス。Ghost-Printer自体のOSS戦略（Core OSをどこまで公開するか）を定義する必要がある。</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- Footer -->
+<div class="footer">
+  <span>Ghost-Printer · Product Design Document · Rev 0.1</span>
+  <span>Confidential — Personal Use Only</span>
+  <span>2026</span>
+</div>
+
+</body>
+</html>

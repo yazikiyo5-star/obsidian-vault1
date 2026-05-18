@@ -1,0 +1,277 @@
+{
+  "version": "0.1.0",
+  "owner_hash": "anonymous",
+  "created_at": "2026-04-15T07:23:29.340204+00:00",
+  "updated_at": "2026-04-16T08:40:45.724682+00:00",
+  "core_identity": {
+    "openness": {
+      "mu": 0.7869,
+      "sigma": 0.0973
+    },
+    "conscientiousness": {
+      "mu": 0.6872,
+      "sigma": 0.1212
+    },
+    "extraversion": {
+      "mu": 0.5,
+      "sigma": 0.3
+    },
+    "agreeableness": {
+      "mu": 0.5,
+      "sigma": 0.3
+    },
+    "neuroticism": {
+      "mu": 0.3667,
+      "sigma": 0.1732
+    },
+    "curiosity": {
+      "mu": 0.5928,
+      "sigma": 0.1523
+    },
+    "creativity": {
+      "mu": 0.5,
+      "sigma": 0.3
+    },
+    "empathy": {
+      "mu": 0.5,
+      "sigma": 0.3
+    },
+    "risk_tolerance": {
+      "mu": 0.6192,
+      "sigma": 0.1617
+    },
+    "independence": {
+      "mu": 0.7455,
+      "sigma": 0.1279
+    }
+  },
+  "episodic_memory": {
+    "recent": [
+      {
+        "id": "ep_20260415_162452",
+        "timestamp": "2026-04-15T07:24:52.593026+00:00",
+        "raw_text": "今日は朝からカフェに行って、一人でゆっくりコーヒーを飲みながら本を読んだ。久しぶりに静かな時間を過ごせて心が落ち着いた。",
+        "summary": "Enjoyed a peaceful solo afternoon at the cafe, reading a book and feeling calm.",
+        "importance": 0.6,
+        "emotion": {
+          "name": "calm",
+          "intensity": 0.6
+        },
+        "personality_signals": [
+          {
+            "dimension": "openness",
+            "value": 0.7,
+            "confidence": 0.7
+          },
+          {
+            "dimension": "conscientiousness",
+            "value": 0.5,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "independence",
+            "value": 0.8,
+            "confidence": 0.7
+          },
+          {
+            "dimension": "curiosity",
+            "value": 0.6,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "neuroticism",
+            "value": 0.3,
+            "confidence": 0.5
+          }
+        ],
+        "topics": [
+          "reading",
+          "coffee",
+          "quiet time",
+          "self-care"
+        ],
+        "values": [
+          "importance of quiet time",
+          "self-care through solitude"
+        ],
+        "context": {
+          "date": "2026-04-15",
+          "time_of_day": "昼"
+        },
+        "weight": 1.0
+      },
+      {
+        "id": "ep_20260415_162555",
+        "timestamp": "2026-04-15T07:25:55.962682+00:00",
+        "raw_text": "チームのミーティングで自分のアイデアを発表した。みんなの反応が良くて嬉しかった。でも少し緊張した。来週のプレゼンに向けてもっと準備しないと。",
+        "summary": "チームでのアイデア発表で成功体験を積みながら、次のプレゼンへの準備を意識している",
+        "importance": 0.6,
+        "emotion": {
+          "name": "joy",
+          "intensity": 0.7
+        },
+        "personality_signals": [
+          {
+            "dimension": "openness",
+            "value": 0.8,
+            "confidence": 0.7
+          },
+          {
+            "dimension": "conscientiousness",
+            "value": 0.75,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "neuroticism",
+            "value": 0.3,
+            "confidence": 0.5
+          },
+          {
+            "dimension": "curiosity",
+            "value": 0.65,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "risk_tolerance",
+            "value": 0.55,
+            "confidence": 0.5
+          }
+        ],
+        "topics": [
+          "プレゼンテーション",
+          "チームワーク",
+          "自己効力感",
+          "職場の評価"
+        ],
+        "values": [
+          "自己改善の重要性",
+          "協力の価値",
+          "準備の大切さ"
+        ],
+        "context": {
+          "date": "2026-04-15",
+          "time_of_day": "昼"
+        },
+        "weight": 1.0
+      },
+      {
+        "id": "ep_20260415_162700",
+        "timestamp": "2026-04-15T07:27:00.258211+00:00",
+        "raw_text": "深夜3時まで新しいプロジェクトのプロトタイプを作っていた。ハードウェアとAIを組み合わせるアイデアが止まらない。周りには理解されないかもしれないけど、これは絶対に世の中を変えると確信している。",
+        "summary": "Individual demonstrates high openness and confidence in developing a groundbreaking hardware-AI hybrid project despite potential lack of external support.",
+        "importance": 0.75,
+        "emotion": {
+          "name": "excitement",
+          "intensity": 0.8
+        },
+        "personality_signals": [
+          {
+            "dimension": "openness",
+            "value": 0.9,
+            "confidence": 0.8
+          },
+          {
+            "dimension": "conscientiousness",
+            "value": 0.85,
+            "confidence": 0.7
+          },
+          {
+            "dimension": "risk_tolerance",
+            "value": 0.75,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "independence",
+            "value": 0.8,
+            "confidence": 0.7
+          }
+        ],
+        "topics": [
+          "AI development",
+          "hardware innovation",
+          "entrepreneurship",
+          "late-night work"
+        ],
+        "values": [
+          "belief in transformative ideas",
+          "perseverance",
+          "technological innovation"
+        ],
+        "context": {
+          "date": "2026-04-15",
+          "time_of_day": "昼"
+        },
+        "weight": 1.0
+      },
+      {
+        "id": "ep_20260416_174045",
+        "timestamp": "2026-04-16T08:40:45.724669+00:00",
+        "importance": 0.5,
+        "emotion_distribution": {},
+        "personality_signals": [],
+        "topic_distribution": {},
+        "value_signals": {},
+        "weight": 1.0,
+        "acoustic": {
+          "pitch": {
+            "mean": 0.1479166666666667,
+            "variance": 3.4722222222222195e-05
+          },
+          "tempo": 0.5,
+          "pause_ratio": 0.0,
+          "energy": {
+            "mean": 0.6904739618301392,
+            "variance": 1.5009607118798836e-05
+          },
+          "emotion": {
+            "valence": 0.4924697923660279,
+            "arousal": 0.45001144732658005,
+            "confidence": 0.26
+          },
+          "duration": 3.0,
+          "speech_ratio": 1.0,
+          "timestamp": "2026-04-16T08:40:45.724633+00:00"
+        },
+        "embedding_hash": null,
+        "nearest_episodes": [],
+        "cluster_assignment": {}
+      }
+    ],
+    "compressed": []
+  },
+  "semantic_map": {
+    "interests": {
+      "reading": 1,
+      "coffee": 1,
+      "quiet time": 1,
+      "self-care": 1,
+      "プレゼンテーション": 1,
+      "チームワーク": 1,
+      "自己効力感": 1,
+      "職場の評価": 1,
+      "ai development": 1,
+      "hardware innovation": 1,
+      "entrepreneurship": 1,
+      "late-night work": 1
+    },
+    "values": {
+      "importance of quiet time": 1,
+      "self-care through solitude": 1,
+      "自己改善の重要性": 1,
+      "協力の価値": 1,
+      "準備の大切さ": 1,
+      "belief in transformative ideas": 1,
+      "perseverance": 1,
+      "technological innovation": 1
+    }
+  },
+  "temporal_patterns": {
+    "active_hours": [],
+    "routines": []
+  },
+  "stats": {
+    "total_episodes": 4,
+    "total_updates": 4
+  },
+  "watchpoints": []
+}

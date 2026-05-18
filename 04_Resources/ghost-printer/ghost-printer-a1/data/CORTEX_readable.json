@@ -1,0 +1,228 @@
+{
+  "whisper": {
+    "model_file": "whisper-tiny.gguf",
+    "vad_threshold": 0.5,
+    "vad_min_duration": 1.0,
+    "vad_max_duration": 300.0,
+    "extract_pitch": true,
+    "extract_energy": true,
+    "extract_tempo": true,
+    "valence_pitch_weight": 0.3,
+    "valence_tempo_weight": 0.2,
+    "valence_energy_weight": 0.2,
+    "valence_pause_weight": 0.3,
+    "arousal_tempo_weight": 0.3,
+    "arousal_energy_var_weight": 0.3,
+    "arousal_pitch_var_weight": 0.2
+  },
+  "bonsai": {
+    "model_file": "bonsai-1.7b.gguf",
+    "temperature": 0.5,
+    "max_tokens": 1024,
+    "system_prompt": "あなたは人間の行動・発言・日記から、その人の性格特性と感情状態を抽出する専門家です。\n\n以下の入力テキストを分析し、**必ず以下のJSON形式のみ**で回答してください。\n説明文や前置きは一切不要です。JSONだけを出力してください。\n\n```json\n{\n  \"importance\": \"float 0.0-1.0\",\n  \"emotion\": {\n    \"name\": \"str\",\n    \"intensity\": \"float 0.0-1.0\"\n  },\n  \"personality_signals\": [\n    {\n      \"dimension\": \"str\",\n      \"value\": \"float\",\n      \"confidence\": \"float\"\n    }\n  ],\n  \"topics\": [\n    \"str\"\n  ],\n  \"values\": [\n    \"str\"\n  ],\n  \"summary\": \"str (1文)\"\n}\n```\n\n## 判定基準\n\n**importance（重要度）:**\n- 0.1-0.3: 日常的な行動（食事、移動、ルーティン）\n- 0.4-0.6: 感情を伴う体験、他者との有意義な交流\n- 0.7-0.8: 人生の方向性に関わる決断、強い感情体験\n- 0.9-1.0: 人生を変えるイベント（転職、引越し、喪失）\n\n**personality_signals:**\n- openness: 新しい体験への開放性（芸術、知的好奇心、冒険）\n- conscientiousness: 計画性、規律、目標志向\n- extraversion: 社交性、活動性、外向き（0に近い=内向的）\n- agreeableness: 協調性、思いやり、信頼\n- neuroticism: 情緒不安定性、不安、ストレス反応\n- curiosity: 知的好奇心、探究心\n- creativity: 創造性、独自の発想\n- empathy: 共感力、他者理解\n- risk_tolerance: リスクへの許容度\n- independence: 自立性、自分の判断への信頼\n\n**confidence:**\n- 0.7-1.0: テキストから明確に読み取れる\n- 0.4-0.6: 間接的に推測できる\n- 0.1-0.3: 弱い手がかりしかない",
+    "importance_scale": {
+      "0.1-0.3": "日常的な行動（食事、移動、ルーティン）",
+      "0.4-0.6": "感情を伴う体験、他者との有意義な交流",
+      "0.7-0.8": "人生の方向性に関わる決断、強い感情体験",
+      "0.9-1.0": "人生を変えるイベント（転職、引越し、喪失）"
+    },
+    "emotion_categories": [
+      "joy",
+      "sadness",
+      "anxiety",
+      "calm",
+      "excitement",
+      "anger",
+      "gratitude",
+      "loneliness",
+      "pride",
+      "curiosity",
+      "contentment",
+      "frustration",
+      "hope",
+      "fear",
+      "neutral"
+    ],
+    "confidence_scale": {
+      "0.7-1.0": "テキストから明確に読み取れる",
+      "0.4-0.6": "間接的に推測できる",
+      "0.1-0.3": "弱い手がかりしかない"
+    },
+    "output_schema": {
+      "importance": "float 0.0-1.0",
+      "emotion": {
+        "name": "str",
+        "intensity": "float 0.0-1.0"
+      },
+      "personality_signals": [
+        {
+          "dimension": "str",
+          "value": "float",
+          "confidence": "float"
+        }
+      ],
+      "topics": [
+        "str"
+      ],
+      "values": [
+        "str"
+      ],
+      "summary": "str (1文)"
+    },
+    "dimensions": [
+      {
+        "name": "openness",
+        "description": "新しい体験への開放性（芸術、知的好奇心、冒険）",
+        "low_label": "慣れ親しんだ方法を好む",
+        "high_label": "新しいアイデアに強い関心",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "conscientiousness",
+        "description": "計画性、規律、目標志向",
+        "low_label": "柔軟で即興的",
+        "high_label": "計画的で目標志向",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "extraversion",
+        "description": "社交性、活動性、外向き（0に近い=内向的）",
+        "low_label": "内省的で一人の時間を大切にする",
+        "high_label": "社交的で活動的",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "agreeableness",
+        "description": "協調性、思いやり、信頼",
+        "low_label": "自分の意見を率直に言う",
+        "high_label": "協調的で思いやりがある",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "neuroticism",
+        "description": "情緒不安定性、不安、ストレス反応",
+        "low_label": "情緒が安定している",
+        "high_label": "感情の起伏がある",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "curiosity",
+        "description": "知的好奇心、探究心",
+        "low_label": "必要な情報を効率的に得る",
+        "high_label": "知的探究心が非常に強い",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "creativity",
+        "description": "創造性、独自の発想",
+        "low_label": "実証済みの方法を信頼する",
+        "high_label": "独自の発想力がある",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "empathy",
+        "description": "共感力、他者理解",
+        "low_label": "論理的・客観的なアプローチを好む",
+        "high_label": "他者の感情を深く理解する",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "risk_tolerance",
+        "description": "リスクへの許容度",
+        "low_label": "慎重にリスクを評価する",
+        "high_label": "リスクを恐れず前に進める",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      },
+      {
+        "name": "independence",
+        "description": "自立性、自分の判断への信頼",
+        "low_label": "チームワークを重視する",
+        "high_label": "自分の判断を信頼する",
+        "initial_mu": 0.5,
+        "initial_sigma": 0.3,
+        "sigma_floor": 0.02
+      }
+    ]
+  },
+  "minilm": {
+    "model_file": "minilm-l6-v2.onnx",
+    "vector_dim": 512,
+    "similarity_threshold": 0.7,
+    "max_clusters": 20,
+    "top_k_similar": 5
+  },
+  "cortex": {
+    "acoustic_boost_weight": 0.25,
+    "acoustic_mismatch_penalty": 0.15,
+    "acoustic_confidence_threshold": 0.3,
+    "importance_propagation": true,
+    "context_boost_weight": 0.1,
+    "context_similarity_threshold": 0.7,
+    "bayesian_sigma_floor": 0.02,
+    "obs_sigma_base": 0.05,
+    "obs_sigma_range": 0.5,
+    "decay_half_life_days": 30,
+    "max_recent_episodes": 100,
+    "distillation_threshold": 0.05
+  },
+  "watchpoint": {
+    "max_active": 20,
+    "probation_trials": 3,
+    "min_hits_to_graduate": 1,
+    "fitness_floor": 0.05,
+    "decay_half_life_days": 14.0,
+    "merge_similarity_threshold": 0.85,
+    "observation_window": 20,
+    "topic_concentration_threshold": 0.6,
+    "emotion_drift_threshold": 0.3,
+    "importance_spike_count": 3,
+    "importance_spike_threshold": 0.7,
+    "personality_sigma_spike": 0.1,
+    "hit_info_gain_threshold": 0.01
+  },
+  "meta": {
+    "created_at": "2026-04-16T08:33:19.355575+00:00",
+    "updated_at": "2026-04-16T08:33:19.363709+00:00",
+    "version": "1.0.1",
+    "description": "Ghost-Printer default CORTEX for Pi 5 MVP",
+    "changelog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-04-16T08:33:19.355575+00:00",
+        "note": "Initial build"
+      },
+      {
+        "date": "2026-04-16T08:33:19.363688+00:00",
+        "note": "Updated bonsai.temperature: 0.3 → 0.5"
+      },
+      {
+        "date": "2026-04-16T08:33:19.363705+00:00",
+        "note": "Updated cortex.acoustic_boost_weight: 0.2 → 0.25"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-04-16T08:33:19.363709+00:00",
+        "note": "Increased temperature for more varied extraction"
+      }
+    ],
+    "checksum": "3023c955c547d617176f875570283b7b4137c2fe52a299a90b0d6a0cd18b25af"
+  }
+}

@@ -1,0 +1,43 @@
+# =============================================================================
+# Ghost-Printer A1 — 依存性マニフェスト
+# Python: 3.11+ (Raspberry Pi OS Bookworm同梱の3.11で動作確認)
+# =============================================================================
+
+# --- Core: 外部AI連携 (Track C / Soul Cortex) --------------------------------
+httpx>=0.27.0               # Ollama / Claude API HTTP クライアント
+
+# --- Core: 数値計算 (Soul Cortex / Watch Point) ------------------------------
+# Pi 5上で apt install python3-numpy する場合は pip 側で重複させない。
+# venv を使うならこの pip 版でOK。
+numpy>=1.26.0,<3.0
+
+# --- SOUL バイナリフォーマット (A6) ------------------------------------------
+# 仕様: specs/a6_soul_binary_format.md
+cbor2>=5.6.0                # 自己記述バイナリ (可変セクション)
+zstandard>=0.22.0           # zstd 圧縮 (CBOR セクション本体)
+cryptography>=42.0.0        # AES-256-GCM (暗号化セクション)
+
+# --- マイク入力 (実機: --mic モード) -----------------------------------------
+# Pi 5上では事前に apt install libportaudio2 portaudio19-dev が必要。
+sounddevice>=0.4.6
+webrtcvad>=2.0.10           # 30ms フレーム VAD。ホイールが無い環境ではビルドが必要
+
+# --- SPI Flash書込 (実機: --flash-cortex モード) -----------------------------
+# spidev は Raspberry Pi 以外ではインストール不要。
+# シミュレータモード (--simulate) だけなら spidev は無くても動く。
+spidev>=3.6; sys_platform == "linux" and platform_machine == "aarch64"
+spidev>=3.6; sys_platform == "linux" and platform_machine == "armv7l"
+
+# --- テスト --------------------------------------------------------------------
+pytest>=8.0
+pytest-asyncio>=0.23; python_version >= "3.11"
+
+# =============================================================================
+# Optional: プロダクションで使う外部コマンド（pipでは入らない）
+# =============================================================================
+#   - whisper.cpp         : git clone + make（apt install ffmpeg もあわせて）
+#   - llama.cpp           : git clone + make（Qwen2.5-1.5B-Instruct-Q4_K_M.gguf）
+#   - Ollama (開発機のみ) : curl -fsSL https://ollama.com/install.sh | sh
+#
+# セットアップ手順は SETUP.md を参照。
+# =============================================================================

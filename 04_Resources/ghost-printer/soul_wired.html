@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Space+Mono:wght@400;700&display=swap');
+  :root {
+    --bg: #0c0c10; --s1: #111118; --s2: #17171f;
+    --b: rgba(255,255,255,0.07); --b2: rgba(255,255,255,0.14);
+    --text: #e8e6df; --dim: rgba(232,230,223,0.35); --mid: rgba(232,230,223,0.62);
+    --gold: #d4a853; --teal: #5ecfb8; --purple: #9b8ec4;
+    --red: #e07b6a; --blue: #6ea8d4; --green: #7ec47e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; padding: 28px 20px; max-width: 960px; margin: 0 auto; }
+  .sec { margin-bottom: 40px; }
+  .sec-label { font-size: 8px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--dim); margin-bottom: 5px; }
+  .sec-title { font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 300; color: var(--text); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid var(--b2); letter-spacing: 0.06em; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .tag-teal { background: rgba(94,207,184,0.1); color: var(--teal); border: 0.5px solid rgba(94,207,184,0.3); }
+  .tag-gold { background: rgba(212,168,83,0.1); color: var(--gold); border: 0.5px solid rgba(212,168,83,0.3); }
+  .tag-purple { background: rgba(155,142,196,0.1); color: var(--purple); border: 0.5px solid rgba(155,142,196,0.3); }
+  .tag-red { background: rgba(224,123,106,0.1); color: var(--red); border: 0.5px solid rgba(224,123,106,0.3); }
+
+  /* trust flow */
+  .flow { display: flex; align-items: stretch; gap: 0; margin-bottom: 24px; }
+  .flow-step { background: var(--s1); border: 0.5px solid var(--b); padding: 16px 14px; flex: 1; }
+  .flow-step:first-child { border-radius: 2px 0 0 2px; }
+  .flow-step:last-child { border-radius: 0 2px 2px 0; }
+  .flow-arrow { background: var(--s2); display: flex; align-items: center; justify-content: center; padding: 0 10px; color: var(--dim); font-size: 14px; border-top: 0.5px solid var(--b); border-bottom: 0.5px solid var(--b); }
+  .flow-n { font-size: 8px; color: var(--dim); letter-spacing: 0.2em; margin-bottom: 6px; }
+  .flow-title { font-size: 11px; color: var(--text); font-weight: 700; margin-bottom: 6px; }
+  .flow-desc { font-size: 9px; color: var(--mid); line-height: 1.6; }
+  .flow-tech { font-size: 8px; color: var(--teal); margin-top: 8px; }
+
+  /* dock SVG area */
+  .dock-wrap { background: var(--s1); border: 0.5px solid rgba(212,168,83,0.3); border-radius: 4px; padding: 24px; margin-bottom: 16px; }
+  .dock-label { font-size: 8px; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; }
+
+  /* comparison table */
+  .cmp { border: 0.5px solid var(--b); border-radius: 2px; overflow: hidden; margin-bottom: 16px; }
+  .cmp-row { display: grid; grid-template-columns: 140px 1fr 1fr; border-bottom: 0.5px solid var(--b); }
+  .cmp-row:last-child { border-bottom: none; }
+  .cmp-row.header { background: var(--s2); }
+  .cmp-cell { padding: 10px 12px; font-size: 10px; border-right: 0.5px solid var(--b); }
+  .cmp-cell:last-child { border-right: none; }
+  .cmp-key { color: var(--dim); font-size: 9px; }
+  .cmp-good { color: var(--teal); }
+  .cmp-bad { color: var(--red); }
+  .cmp-header { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* form factor grid */
+  .ff-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .ff { background: var(--s1); border: 0.5px solid var(--b); border-radius: 2px; padding: 12px; }
+  .ff-icon { font-size: 20px; margin-bottom: 6px; }
+  .ff-name { font-size: 10px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .ff-connector { font-size: 9px; margin-bottom: 4px; }
+  .ff-note { font-size: 9px; color: var(--dim); line-height: 1.5; }
+
+  /* trust topology */
+  .topo-wrap { background: var(--s1); border: 0.5px solid var(--b); border-radius: 2px; padding: 20px; margin-bottom: 16px; }
+  .topo-title { font-size: 9px; color: var(--dim); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; }
+
+  /* insight box */
+  .insight { background: rgba(94,207,184,0.04); border: 0.5px solid rgba(94,207,184,0.25); border-radius: 2px; padding: 14px; }
+  .insight-title { font-size: 9px; color: var(--teal); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 10px; }
+  .insight-body { font-size: 10px; color: var(--mid); line-height: 1.8; }
+
+  /* property list */
+  .prop { font-size: 10px; color: var(--mid); padding: 5px 0; border-bottom: 0.5px solid var(--b); display: flex; gap: 8px; align-items: flex-start; }
+  .prop:last-child { border-bottom: none; }
+  .prop-mark { flex-shrink: 0; margin-top: 1px; }
+</style>
+</head>
+<body>
+
+<!-- 01 trust establishment flow -->
+<div class="sec">
+  <div class="sec-label">01</div>
+  <div class="sec-title">有線による信頼確立フロー — Wire Once, Trust Forever</div>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-n">STEP 1</div>
+      <div class="flow-title">物理的に接続</div>
+      <div class="flow-desc">USB-C または Pogo Pin ドックで 2つのCoreを有線接続。この行為が「同じ人が持っている」という物理的証明になる。</div>
+      <div class="flow-tech">USB-C / Pogo dock</div>
+    </div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-step">
+      <div class="flow-n">STEP 2</div>
+      <div class="flow-title">鍵交換（有線）</div>
+      <div class="flow-desc">有線上でECDH鍵交換を実行。中間者攻撃が物理的に不可能な経路で、お互いの公開鍵を安全に交換する。</div>
+      <div class="flow-tech">ECDH over wire</div>
+    </div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-step">
+      <div class="flow-n">STEP 3</div>
+      <div class="flow-title">初回SOULマージ</div>
+      <div class="flow-desc">初回は有線の高帯域でSOUL全体を同期。USB 2.0で最大480Mbpsと、BLE比で数百倍の速度。</div>
+      <div class="flow-tech">最大480Mbps</div>
+    </div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-step" style="border-color: rgba(94,207,184,0.3)">
+      <div class="flow-n">以降</div>
+      <div class="flow-title">BLEで差分同期</div>
+      <div class="flow-desc">信頼確立済みのため、以降はBLEで自動的に差分のみ同期。充電時に有線で定期的なフルマージも可能。</div>
+      <div class="flow-tech" style="color:var(--gold)">delta sync / BLE</div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 dock concept -->
+<div class="sec">
+  <div class="sec-label">02</div>
+  <div class="sec-title">Soul Dock — 充電が同期になる</div>
+
+  <div class="dock-wrap">
+    <div class="dock-label">Soul Dock — 夜間に全Coreが集まる場所</div>
+    <svg viewBox="0 0 860 220" width="100%" style="display:block;">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="rgba(94,207,184,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Dock body -->
+      <rect x="260" y="80" width="340" height="100" rx="6" fill="rgba(212,168,83,0.06)" stroke="rgba(212,168,83,0.35)" stroke-width="1"/>
+      <text x="430" y="104" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(212,168,83,0.7)" letter-spacing="2">SOUL DOCK</text>
+
+      <!-- Pogo / USB slots -->
+      <rect x="295" y="115" width="50" height="32" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+      <rect x="370" y="115" width="50" height="32" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+      <rect x="445" y="115" width="50" height="32" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+      <rect x="520" y="115" width="50" height="32" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+      <text x="320" y="135" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(255,255,255,0.25)">slot</text>
+      <text x="395" y="135" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(255,255,255,0.25)">slot</text>
+      <text x="470" y="135" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(255,255,255,0.25)">slot</text>
+      <text x="545" y="135" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(255,255,255,0.25)">slot</text>
+
+      <!-- Hub line -->
+      <line x1="295" y1="172" x2="575" y2="172" stroke="rgba(212,168,83,0.3)" stroke-width="0.5" stroke-dasharray="3 3"/>
+      <text x="430" y="186" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(212,168,83,0.4)">internal bus (USB hub)</text>
+
+      <!-- Core nodes -->
+      <!-- Wearable -->
+      <rect x="40" y="20" width="90" height="50" rx="4" fill="rgba(94,207,184,0.07)" stroke="rgba(94,207,184,0.35)" stroke-width="0.8"/>
+      <text x="85" y="42" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(94,207,184,0.8)">⌚ Wearable</text>
+      <text x="85" y="58" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(94,207,184,0.4)">Core A</text>
+      <line x1="130" y1="45" x2="260" y2="125" stroke="rgba(94,207,184,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+      <!-- Desk -->
+      <rect x="150" y="20" width="90" height="50" rx="4" fill="rgba(212,168,83,0.07)" stroke="rgba(212,168,83,0.35)" stroke-width="0.8"/>
+      <text x="195" y="42" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(212,168,83,0.8)">🖥 Desk</text>
+      <text x="195" y="58" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(212,168,83,0.4)">Core B</text>
+      <line x1="220" y1="70" x2="340" y2="115" stroke="rgba(212,168,83,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+      <!-- Car -->
+      <rect x="620" y="20" width="90" height="50" rx="4" fill="rgba(155,142,196,0.07)" stroke="rgba(155,142,196,0.35)" stroke-width="0.8"/>
+      <text x="665" y="42" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(155,142,196,0.8)">🚗 Car</text>
+      <text x="665" y="58" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(155,142,196,0.4)">Core C</text>
+      <line x1="620" y1="45" x2="575" y2="125" stroke="rgba(155,142,196,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+      <!-- Home -->
+      <rect x="730" y="20" width="90" height="50" rx="4" fill="rgba(126,196,126,0.07)" stroke="rgba(126,196,126,0.35)" stroke-width="0.8"/>
+      <text x="775" y="42" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(126,196,126,0.8)">🏠 Home</text>
+      <text x="775" y="58" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(126,196,126,0.4)">Core D</text>
+      <line x1="730" y1="45" x2="600" y2="115" stroke="rgba(126,196,126,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+      <!-- what happens in dock -->
+      <text x="430" y="210" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,230,223,0.3)">← 全Coreが充電しながら高速フルマージ。朝には統合されたSOULで起動 →</text>
+    </svg>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+    <div style="background:var(--s1);border:0.5px solid var(--b);border-radius:2px;padding:12px;">
+      <div style="font-size:9px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;">充電 = 同期</div>
+      <div style="font-size:10px;color:var(--mid);line-height:1.6;">毎晩ドックに置くだけで全Coreが最新SOULを共有。意識する必要がない。</div>
+    </div>
+    <div style="background:var(--s1);border:0.5px solid var(--b);border-radius:2px;padding:12px;">
+      <div style="font-size:9px;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;">高帯域バックアップ</div>
+      <div style="font-size:10px;color:var(--mid);line-height:1.6;">BLEの数百倍の速度。SOULの完全バックアップを定期的に実行できる。</div>
+    </div>
+    <div style="background:var(--s1);border:0.5px solid var(--b);border-radius:2px;padding:12px;">
+      <div style="font-size:9px;color:var(--purple);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;">新Core追加</div>
+      <div style="font-size:10px;color:var(--mid);line-height:1.6;">新しいCoreをドックに挿すだけで信頼確立 + 初回同期が完了。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 connector by form factor -->
+<div class="sec">
+  <div class="sec-label">03</div>
+  <div class="sec-title">フォームファクター別コネクタ設計</div>
+  <div class="ff-grid">
+    <div class="ff">
+      <div class="ff-icon">⌚</div>
+      <div class="ff-name">Wearable Core</div>
+      <div class="ff-connector"><span class="tag tag-gold">Pogo Pin × 4</span></div>
+      <div class="ff-note">Apple Watch型の充電ドック。側面に見えないよう配置。ドックに置く＝接続。</div>
+    </div>
+    <div class="ff">
+      <div class="ff-icon">🖥</div>
+      <div class="ff-name">Desk Core</div>
+      <div class="ff-connector"><span class="tag tag-teal">USB-C</span></div>
+      <div class="ff-note">標準的なUSB-Cで接続。ケーブル1本でドックと繋がる。最もシンプル。</div>
+    </div>
+    <div class="ff">
+      <div class="ff-icon">🚗</div>
+      <div class="ff-name">Car Core</div>
+      <div class="ff-connector"><span class="tag tag-purple">USB-C</span></div>
+      <div class="ff-note">車に常設するため普段は有線不要。帰宅時にドックへ接続で同期。</div>
+    </div>
+    <div class="ff">
+      <div class="ff-icon">💎</div>
+      <div class="ff-name">Pendant Core</div>
+      <div class="ff-connector"><span class="tag tag-gold">Pogo Pin × 4</span></div>
+      <div class="ff-note">アクセサリー外観を保つためPogo Pin。専用の小型ドックに置いて充電・同期。</div>
+    </div>
+  </div>
+  <div style="font-size:9px;color:var(--dim);line-height:1.7;margin-top:8px;">
+    → Pogo Pinは4ピン（GND・VBUS・D+・D−）でUSB 2.0として機能。ドックはUSBハブICを内蔵し、全スロットを1本のUSB-Cでホスト（PCやCore）に接続できる。
+  </div>
+</div>
+
+<!-- 04 trust topology -->
+<div class="sec">
+  <div class="sec-label">04</div>
+  <div class="sec-title">信頼のトポロジー — ドックが中心になる</div>
+  <div class="topo-wrap">
+    <div class="topo-title">有線接続が作る信頼グラフ</div>
+    <svg viewBox="0 0 820 180" width="100%" style="display:block;">
+      <!-- Dock center -->
+      <rect x="335" y="65" width="150" height="50" rx="4" fill="rgba(212,168,83,0.08)" stroke="rgba(212,168,83,0.5)" stroke-width="1"/>
+      <text x="410" y="87" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(212,168,83,0.9)" font-weight="bold">SOUL DOCK</text>
+      <text x="410" y="103" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(212,168,83,0.5)">信頼の起点</text>
+
+      <!-- Core A -->
+      <circle cx="100" cy="90" r="30" fill="rgba(94,207,184,0.07)" stroke="rgba(94,207,184,0.5)" stroke-width="1"/>
+      <text x="100" y="88" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(94,207,184,0.9)">Core A</text>
+      <text x="100" y="102" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(94,207,184,0.5)">Wearable</text>
+      <line x1="130" y1="90" x2="335" y2="90" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/>
+      <text x="220" y="80" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(212,168,83,0.5)">有線・信頼済</text>
+
+      <!-- Core B -->
+      <circle cx="720" cy="90" r="30" fill="rgba(155,142,196,0.07)" stroke="rgba(155,142,196,0.5)" stroke-width="1"/>
+      <text x="720" y="88" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(155,142,196,0.9)">Core B</text>
+      <text x="720" y="102" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(155,142,196,0.5)">Car</text>
+      <line x1="485" y1="90" x2="690" y2="90" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/>
+      <text x="590" y="80" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(212,168,83,0.5)">有線・信頼済</text>
+
+      <!-- Core C (new, not yet trusted) -->
+      <circle cx="410" cy="160" r="25" fill="rgba(224,123,106,0.05)" stroke="rgba(224,123,106,0.3)" stroke-width="0.8" stroke-dasharray="4 3"/>
+      <text x="410" y="158" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(224,123,106,0.7)">Core C</text>
+      <text x="410" y="170" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(224,123,106,0.4)">未接続</text>
+
+      <!-- A ↔ B trusted via dock (BLE) -->
+      <path d="M130 70 Q410 20 690 70" fill="none" stroke="rgba(94,207,184,0.25)" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <text x="410" y="35" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(94,207,184,0.4)">BLE 自動同期（ドック経由で信頼済）</text>
+    </svg>
+    <div style="font-size:9px;color:var(--dim);line-height:1.7;margin-top:8px;">
+      → Core AとCore Bはドックに差したことで互いを信頼。以降はBLEで直接通信できる。Core Cは未接続のため、ドックに挿すまで信頼されない。<br>
+      ドックが「認証局」の役割を物理的に担う。ソフトウェアのCAは不要。
+    </div>
+  </div>
+</div>
+
+<!-- 05 comparison -->
+<div class="sec">
+  <div class="sec-label">05</div>
+  <div class="sec-title">認証方式の比較</div>
+  <div class="cmp">
+    <div class="cmp-row header">
+      <div class="cmp-cell cmp-header cmp-key">方式</div>
+      <div class="cmp-cell cmp-header" style="color:var(--gold)">有線 + Dock（提案）</div>
+      <div class="cmp-cell cmp-header" style="color:var(--dim)">クラウド認証 / QR / 既存方式</div>
+    </div>
+    <div class="cmp-row">
+      <div class="cmp-cell cmp-key">信頼の根拠</div>
+      <div class="cmp-cell cmp-good">物理的所持（偽造不可）</div>
+      <div class="cmp-cell cmp-bad">パスワード / アカウント（フィッシング可）</div>
+    </div>
+    <div class="cmp-row">
+      <div class="cmp-cell cmp-key">オフライン動作</div>
+      <div class="cmp-cell cmp-good">完全対応（クラウド不要）</div>
+      <div class="cmp-cell cmp-bad">クラウド依存が多い</div>
+    </div>
+    <div class="cmp-row">
+      <div class="cmp-cell cmp-key">初回セットアップ</div>
+      <div class="cmp-cell cmp-good">ケーブルを挿すだけ</div>
+      <div class="cmp-cell cmp-bad">アカウント作成 / QRスキャン等</div>
+    </div>
+    <div class="cmp-row">
+      <div class="cmp-cell cmp-key">帯域（初回同期）</div>
+      <div class="cmp-cell cmp-good">USB 2.0: 最大480Mbps</div>
+      <div class="cmp-cell cmp-bad">BLE: 約1Mbps</div>
+    </div>
+    <div class="cmp-row">
+      <div class="cmp-cell cmp-key">MITM攻撃</div>
+      <div class="cmp-cell cmp-good">物理的に不可能</div>
+      <div class="cmp-cell cmp-bad">無線は原理的にリスクあり</div>
+    </div>
+    <div class="cmp-row">
+      <div class="cmp-cell cmp-key">ユーザー体験</div>
+      <div class="cmp-cell cmp-good">直感的（挿す = 信頼）</div>
+      <div class="cmp-cell cmp-bad">手順が複数 / 説明が必要</div>
+    </div>
+    <div class="cmp-row">
+      <div class="cmp-cell cmp-key">OSS実装</div>
+      <div class="cmp-cell cmp-good">USB標準仕様のみ使用</div>
+      <div class="cmp-cell cmp-bad">独自プロトコルになりがち</div>
+    </div>
+  </div>
+</div>
+
+<!-- insight -->
+<div class="insight">
+  <div class="insight-title">設計上の重要な示唆</div>
+  <div class="insight-body">
+    ドック自体をCoreのひとつとして扱うことができる。据え置き型のHome Coreとして機能しながら、充電ハブ・認証局・バックアップストレージを兼ねる。<br><br>
+    「毎晩ドックに置く」という行為が、充電・同期・バックアップを同時に解決する。ユーザーに特別な操作を求めない設計として、これは非常に強い。
+  </div>
+</div>
+
+</body>
+</html>

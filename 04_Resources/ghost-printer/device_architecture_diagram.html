@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghost-Printer — デバイス構成図（初心者向け）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+  :root {
+    --bg: #09090d;
+    --s1: #0f0f16;
+    --s2: #141420;
+    --s3: #1a1a28;
+    --b: rgba(255,255,255,0.06);
+    --b2: rgba(255,255,255,0.12);
+    --b3: rgba(255,255,255,0.2);
+    --text: #eae8e1;
+    --dim: rgba(234,232,225,0.32);
+    --mid: rgba(234,232,225,0.58);
+    --gold: #d4a853;
+    --gold-dim: rgba(212,168,83,0.14);
+    --teal: #5ecfb8;
+    --teal-dim: rgba(94,207,184,0.14);
+    --purple: #9b8ec4;
+    --purple-dim: rgba(155,142,196,0.14);
+    --red: #e07b6a;
+    --red-dim: rgba(224,123,106,0.12);
+    --blue: #6ea8d4;
+    --blue-dim: rgba(110,168,212,0.14);
+    --green: #7ec47e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Serif JP', serif;
+    line-height: 1.7;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: 'Space Mono', monospace; }
+
+  /* Layout */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 60px 40px 100px; }
+
+  /* Header */
+  header { border-bottom: 1px solid var(--b); padding-bottom: 32px; margin-bottom: 48px; }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-weight: 300; font-size: 42px; letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .sub { color: var(--mid); font-size: 15px; max-width: 680px; }
+
+  /* Section */
+  section { margin-top: 72px; }
+  h2 {
+    font-weight: 400; font-size: 26px; margin-bottom: 8px;
+  }
+  h2 .num {
+    font-family: 'Space Mono', monospace;
+    color: var(--gold); font-size: 13px;
+    margin-right: 16px; letter-spacing: 0.1em;
+  }
+  h3 { font-weight: 400; font-size: 18px; margin-bottom: 8px; }
+  .lead { color: var(--mid); font-size: 15px; margin-bottom: 28px; max-width: 780px; }
+
+  /* Big diagram */
+  .hero-diagram {
+    background: linear-gradient(180deg, var(--s1), var(--s2));
+    border: 1px solid var(--b);
+    border-radius: 8px;
+    padding: 60px 40px;
+    margin-top: 24px;
+  }
+  .hero-svg { width: 100%; max-width: 1080px; display: block; margin: 0 auto; }
+
+  /* Two-column component layout */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 32px; margin-top: 32px;
+  }
+  @media (max-width: 820px) { .two-col { grid-template-columns: 1fr; } }
+
+  .device-block {
+    background: var(--s1);
+    border: 1px solid var(--b);
+    border-radius: 8px; padding: 32px;
+  }
+  .device-block.ring { border-top: 3px solid var(--teal); }
+  .device-block.body { border-top: 3px solid var(--gold); }
+
+  .device-title {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 8px;
+  }
+  .device-title h3 { font-size: 22px; font-weight: 400; }
+  .device-title .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    padding: 2px 8px; border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .ring .tag { background: var(--teal-dim); color: var(--teal); }
+  .body .tag { background: var(--gold-dim); color: var(--gold); }
+
+  .device-desc {
+    color: var(--mid); font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .part-list { list-style: none; }
+  .part {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--b);
+  }
+  .part:first-child { border-top: none; padding-top: 0; }
+  .part-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; font-weight: 700;
+    color: var(--text); letter-spacing: 0.02em;
+  }
+  .part-role { color: var(--mid); font-size: 14px; }
+  .part-role strong { color: var(--text); font-weight: 500; }
+  .part-analog {
+    display: block; margin-top: 4px;
+    color: var(--dim); font-size: 12px;
+    font-style: italic;
+  }
+
+  /* Flow diagram */
+  .flow-wrap {
+    background: linear-gradient(180deg, var(--s1), var(--s2));
+    border: 1px solid var(--b);
+    border-radius: 8px;
+    padding: 48px 32px;
+    margin-top: 24px;
+  }
+  .flow-svg { width: 100%; display: block; margin: 0 auto; }
+
+  /* Glossary */
+  .gloss-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .gloss {
+    background: var(--s1);
+    border: 1px solid var(--b);
+    border-radius: 6px;
+    padding: 18px;
+  }
+  .gloss-term {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700; font-size: 13px;
+    color: var(--gold);
+    margin-bottom: 6px; letter-spacing: 0.02em;
+  }
+  .gloss-def { color: var(--mid); font-size: 13px; line-height: 1.6; }
+
+  footer {
+    margin-top: 96px; padding-top: 32px;
+    border-top: 1px solid var(--b);
+    color: var(--dim); font-size: 12px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .legend {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    margin-top: 24px; padding: 20px;
+    background: var(--s1); border: 1px solid var(--b);
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot.teal { background: var(--teal); }
+  .dot.gold { background: var(--gold); }
+  .dot.blue { background: var(--blue); }
+  .dot.purple { background: var(--purple); }
+  .dot.red { background: var(--red); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Device Architecture — Beginner Friendly</div>
+  <h1>Ghost-Printer デバイス構成図</h1>
+  <p class="sub">指にはめた小さなリングが、あなたの身体のデータを集めて、Ghost-Printer本体に無線で送ります。本体のなかではAIがそのデータを解釈し、あなた専用の「SOUL（魂のデータ）」を生み出します。2026-04-18時点の構成です。</p>
+</header>
+
+<!-- ═══════════════ 1. 全体像 ═══════════════ -->
+<section>
+  <h2><span class="num">01</span>全体像</h2>
+  <p class="lead">2つのデバイスが無線でつながっています。<strong style="color:var(--teal)">左：リング（身体を測るセンサー）</strong>、<strong style="color:var(--gold)">右：Ghost-Printer本体（考えて出力する頭脳）</strong>。その間は <strong style="color:var(--blue)">BLE（Bluetooth Low Energy）</strong> という省電力無線でデータが流れます。</p>
+
+  <div class="hero-diagram">
+    <svg class="hero-svg" viewBox="0 0 1080 420" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background subtle grid -->
+      <defs>
+        <radialGradient id="glowT" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#5ecfb8" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#5ecfb8" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="glowG" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#d4a853" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#d4a853" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1a1a28"/>
+          <stop offset="100%" stop-color="#0f0f16"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Ring side glow -->
+      <ellipse cx="200" cy="210" rx="180" ry="160" fill="url(#glowT)"/>
+      <!-- Printer side glow -->
+      <ellipse cx="850" cy="210" rx="220" ry="170" fill="url(#glowG)"/>
+
+      <!-- ═══ LEFT: RING ═══ -->
+      <g transform="translate(200, 210)">
+        <!-- Finger (ghost outline) -->
+        <path d="M -50,-80 Q -50,-120 -25,-120 L 25,-120 Q 50,-120 50,-80 L 50,120 L -50,120 Z"
+              fill="none" stroke="rgba(234,232,225,0.1)" stroke-width="1.5" stroke-dasharray="3 4"/>
+        <!-- Ring body outer -->
+        <ellipse cx="0" cy="0" rx="75" ry="32" fill="#1a1a28" stroke="#5ecfb8" stroke-width="2.5"/>
+        <ellipse cx="0" cy="0" rx="75" ry="32" fill="none" stroke="rgba(94,207,184,0.3)" stroke-width="6"/>
+        <!-- Ring inner hole -->
+        <ellipse cx="0" cy="0" rx="55" ry="22" fill="#09090d"/>
+        <!-- PPG sensor indicators (green LEDs) -->
+        <circle cx="-25" cy="22" r="3" fill="#7ec47e" opacity="0.9"/>
+        <circle cx="0" cy="26" r="3" fill="#7ec47e" opacity="0.9"/>
+        <circle cx="25" cy="22" r="3" fill="#7ec47e" opacity="0.9"/>
+        <!-- Sensor glow -->
+        <circle cx="0" cy="26" r="10" fill="#7ec47e" opacity="0.15"/>
+
+        <!-- Label -->
+        <text x="0" y="-60" text-anchor="middle" fill="#5ecfb8" font-family="Space Mono" font-size="11" font-weight="700" letter-spacing="2">COLMI R02</text>
+        <text x="0" y="180" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="16">スマートリング</text>
+        <text x="0" y="202" text-anchor="middle" fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="12">身体を測るセンサー</text>
+      </g>
+
+      <!-- ═══ MIDDLE: BLE WAVES ═══ -->
+      <g transform="translate(540, 210)">
+        <!-- Arcs expanding right -->
+        <path d="M -180,0 Q -130,-35 -80,0 Q -30,35 20,0" fill="none" stroke="#6ea8d4" stroke-width="2" opacity="0.5"/>
+        <path d="M -160,0 Q -110,-45 -60,0 Q -10,45 40,0" fill="none" stroke="#6ea8d4" stroke-width="2" opacity="0.7"/>
+        <path d="M -140,0 Q -90,-55 -40,0 Q 10,55 60,0" fill="none" stroke="#6ea8d4" stroke-width="2.5" opacity="0.9"/>
+
+        <!-- BLE Label -->
+        <rect x="-60" y="-110" width="120" height="34" rx="4" fill="#141420" stroke="#6ea8d4" stroke-width="1.5"/>
+        <text x="0" y="-95" text-anchor="middle" fill="#6ea8d4" font-family="Space Mono" font-size="10" font-weight="700" letter-spacing="1.5">BLE 5.0</text>
+        <text x="0" y="-82" text-anchor="middle" fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="10">省電力無線通信</text>
+
+        <!-- Description arrow -->
+        <text x="0" y="60" text-anchor="middle" fill="rgba(234,232,225,0.32)" font-family="Noto Serif JP" font-size="11">心拍・歩数・睡眠などのデータ</text>
+      </g>
+
+      <!-- ═══ RIGHT: GHOST-PRINTER BODY ═══ -->
+      <g transform="translate(850, 210)">
+        <!-- Outer case -->
+        <rect x="-110" y="-110" width="220" height="220" rx="16"
+              fill="url(#bodyGrad)" stroke="#d4a853" stroke-width="2"/>
+        <rect x="-110" y="-110" width="220" height="220" rx="16"
+              fill="none" stroke="rgba(212,168,83,0.25)" stroke-width="6"/>
+
+        <!-- Inside: SBC board with chip -->
+        <rect x="-85" y="-70" width="170" height="80" rx="4"
+              fill="#141420" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+        <!-- Main chip (SoC) -->
+        <rect x="-30" y="-48" width="60" height="36" fill="#0f0f16" stroke="#d4a853" stroke-width="1.5"/>
+        <text x="0" y="-30" text-anchor="middle" fill="#d4a853" font-family="Space Mono" font-size="8" font-weight="700">RK3566</text>
+        <text x="0" y="-18" text-anchor="middle" fill="rgba(212,168,83,0.6)" font-family="Space Mono" font-size="6">NPU 0.8T</text>
+
+        <!-- BT chip (corner) -->
+        <rect x="-74" y="-60" width="22" height="14" fill="#0f0f16" stroke="#6ea8d4" stroke-width="1"/>
+        <text x="-63" y="-50" text-anchor="middle" fill="#6ea8d4" font-family="Space Mono" font-size="6" font-weight="700">BT</text>
+
+        <!-- MicroSD slot -->
+        <rect x="48" y="-60" width="28" height="12" fill="#0f0f16" stroke="rgba(234,232,225,0.3)" stroke-width="1"/>
+        <text x="62" y="-51" text-anchor="middle" fill="rgba(234,232,225,0.5)" font-family="Space Mono" font-size="5">SD</text>
+
+        <!-- Battery indicator -->
+        <rect x="-85" y="30" width="75" height="26" rx="2" fill="#0f0f16" stroke="rgba(224,123,106,0.5)" stroke-width="1"/>
+        <rect x="-82" y="33" width="30" height="20" fill="#e07b6a" opacity="0.5"/>
+        <text x="-47" y="46" text-anchor="middle" fill="rgba(224,123,106,0.8)" font-family="Space Mono" font-size="7" font-weight="700">LiPo 500mAh</text>
+
+        <!-- Mic -->
+        <circle cx="30" cy="45" r="10" fill="#0f0f16" stroke="#9b8ec4" stroke-width="1.5"/>
+        <circle cx="30" cy="45" r="4" fill="#9b8ec4" opacity="0.4"/>
+        <text x="70" y="48" fill="rgba(155,142,196,0.8)" font-family="Space Mono" font-size="7" font-weight="700">MIC</text>
+
+        <!-- Pogo pins at bottom -->
+        <circle cx="-30" cy="85" r="3" fill="#d4a853"/>
+        <circle cx="-10" cy="85" r="3" fill="#d4a853"/>
+        <circle cx="10" cy="85" r="3" fill="#d4a853"/>
+        <circle cx="30" cy="85" r="3" fill="#d4a853"/>
+
+        <!-- Label -->
+        <text x="0" y="-86" text-anchor="middle" fill="#d4a853" font-family="Space Mono" font-size="11" font-weight="700" letter-spacing="2">GHOST-PRINTER</text>
+        <text x="0" y="145" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="16">本体</text>
+        <text x="0" y="167" text-anchor="middle" fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="12">考えてSOULを出力する頭脳</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="dot teal"></span>リング（入力デバイス）</div>
+    <div class="legend-item"><span class="dot blue"></span>無線通信</div>
+    <div class="legend-item"><span class="dot gold"></span>本体（処理デバイス）</div>
+    <div class="legend-item"><span class="dot purple"></span>補助的な入力</div>
+    <div class="legend-item"><span class="dot red"></span>電源</div>
+  </div>
+</section>
+
+<!-- ═══════════════ 2. 部品の名前と役割 ═══════════════ -->
+<section>
+  <h2><span class="num">02</span>部品の名前と役割</h2>
+  <p class="lead">それぞれのパーツが何で、何の役割を果たすかを、日常の比喩を添えて説明します。</p>
+
+  <div class="two-col">
+    <!-- LEFT: Ring components -->
+    <div class="device-block ring">
+      <div class="device-title">
+        <h3>スマートリング側</h3>
+        <span class="tag">COLMI R02</span>
+      </div>
+      <p class="device-desc">指にはめる小さな指輪型のセンサー。常時身につけて身体の状態を測り続けます。価格は約3,000円。</p>
+
+      <ul class="part-list">
+        <li class="part">
+          <div class="part-name">PPGセンサー</div>
+          <div class="part-role">
+            緑のLEDを指にあてて、血流の変化から<strong>心拍数</strong>と<strong>血中酸素（SpO2）</strong>を測る。
+            <span class="part-analog">〝ドラッグストアでおなじみの指クリップ式パルスオキシメーター〟を極小にしたもの</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">加速度センサー<br>STK8321</div>
+          <div class="part-role">
+            指の動きを3方向で検知して、<strong>歩数</strong>や<strong>活動量</strong>を推定する。
+            <span class="part-analog">〝スマホを振ると反応する機能〟と同じ仕組み</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">BLEチップ<br>BlueX RF03</div>
+          <div class="part-role">
+            リングの頭脳。センサーの値をまとめて<strong>無線でGhost-Printerに送る</strong>。
+            <span class="part-analog">〝小さなトランシーバー〟</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">バッテリー<br>17mAh</div>
+          <div class="part-role">
+            リングの電源。<strong>4〜5日に1回</strong>、専用ドックで充電する。
+            <span class="part-analog">イヤホン用小型バッテリーの1/10程度</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">防水<br>5ATM</div>
+          <div class="part-role">
+            水深50m相当まで耐える。手洗い・入浴・軽いプール程度ならつけたまま。
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- RIGHT: Ghost-Printer body components -->
+    <div class="device-block body">
+      <div class="device-title">
+        <h3>Ghost-Printer 本体側</h3>
+        <span class="tag">Radxa Zero 3W</span>
+      </div>
+      <p class="device-desc">65×30mmの手のひらサイズのミニコンピュータ。リングからデータを受け取り、ローカルAI（Bonsai）で<strong>意味抽出・重要度判定</strong>を行い、SOUL（魂データ）に組み上げます。※ SOULを使って実際に会話するのは外部AI（Claude等）の役割。</p>
+
+      <ul class="part-list">
+        <li class="part">
+          <div class="part-name">メインボード<br>Radxa Zero 3W</div>
+          <div class="part-role">
+            脳と心臓を兼ねた基板。4GBのメモリで<strong>意味抽出AI（Bonsai 1.7B）を動かせる</strong>。会話生成は行わず、データをSOULに変換する役目。
+            <span class="part-analog">〝Raspberry Pi Zeroの中華版（より速い）〟</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">SoC<br>Rockchip RK3566</div>
+          <div class="part-role">
+            ボードの中心。<strong>CPU × 4コア + NPU</strong>（AI専用の計算回路）を持つ1つの大きなチップ。
+            <span class="part-analog">〝人の左脳（CPU）＋直感処理（NPU）〟</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">BTチップ<br>AP6212A系</div>
+          <div class="part-role">
+            リングから飛んでくる<strong>BLE信号を受信する耳</strong>。ボードに最初から内蔵されている。
+            <span class="part-analog">〝ワイヤレスイヤホンの受信部〟</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">microSD<br>32GB A2</div>
+          <div class="part-role">
+            <strong>OS（Debian Linux）とデータ</strong>を保存するカード。差し替えで環境を作り直せる。
+            <span class="part-analog">〝脳の長期記憶〟</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">マイク<br>ICS-43434</div>
+          <div class="part-role">
+            <strong>音声・環境音</strong>を拾う入力。リングでは取れない「声」を補う。
+            <span class="part-analog">〝耳〟</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">バッテリー<br>LiPo 500mAh</div>
+          <div class="part-role">
+            本体の電源。リチウムポリマー、3.7V。
+            <span class="part-analog">〝ワイヤレスイヤホンのケース程度〟</span>
+          </div>
+        </li>
+        <li class="part">
+          <div class="part-name">Pogo Pin<br>4極</div>
+          <div class="part-role">
+            <strong>Soul Dock（将来の土台）と接続する金色のピン</strong>。充電やデータ転送に使う。
+            <span class="part-analog">〝Apple Watchの背面の磁気充電部〟</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 3. データの流れ ═══════════════ -->
+<section>
+  <h2><span class="num">03</span>データの流れ</h2>
+  <p class="lead">あなたの身体の情報が「数字 → 状態 → 意味 → SOUL → 外部AIの返答」と姿を変えていく旅路です。Bonsaiは<strong>意味抽出</strong>、会話生成は<strong>外部AI</strong>が担当します。</p>
+
+  <div class="flow-wrap">
+    <svg class="flow-svg" viewBox="0 0 900 740" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="rgba(234,232,225,0.5)"/>
+        </marker>
+      </defs>
+
+      <!-- Step 1: Body -->
+      <g transform="translate(450, 50)">
+        <rect x="-180" y="-30" width="360" height="60" rx="30" fill="#141420" stroke="#7ec47e" stroke-width="1.5"/>
+        <text x="0" y="-5" text-anchor="middle" fill="#7ec47e" font-family="Space Mono" font-size="10" font-weight="700" letter-spacing="2">STEP 1 — BODY</text>
+        <text x="0" y="18" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="14">あなたの身体（心拍・呼吸・動き）</text>
+      </g>
+      <line x1="450" y1="82" x2="450" y2="112" stroke="rgba(234,232,225,0.5)" stroke-width="1.5" marker-end="url(#arrowA)"/>
+
+      <!-- Step 2: Ring sensors -->
+      <g transform="translate(450, 140)">
+        <rect x="-180" y="-30" width="360" height="60" rx="8" fill="#141420" stroke="#5ecfb8" stroke-width="1.5"/>
+        <text x="0" y="-5" text-anchor="middle" fill="#5ecfb8" font-family="Space Mono" font-size="10" font-weight="700" letter-spacing="2">STEP 2 — RING SENSORS</text>
+        <text x="0" y="18" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="14">COLMI R02 がセンサー値に変換</text>
+      </g>
+      <line x1="450" y1="172" x2="450" y2="202" stroke="rgba(234,232,225,0.5)" stroke-width="1.5" marker-end="url(#arrowA)"/>
+      <text x="470" y="190" fill="rgba(110,168,212,0.8)" font-family="Space Mono" font-size="10">BLE 5.0</text>
+
+      <!-- Step 3: BT chip -->
+      <g transform="translate(450, 230)">
+        <rect x="-180" y="-30" width="360" height="60" rx="8" fill="#141420" stroke="#6ea8d4" stroke-width="1.5"/>
+        <text x="0" y="-5" text-anchor="middle" fill="#6ea8d4" font-family="Space Mono" font-size="10" font-weight="700" letter-spacing="2">STEP 3 — RECEIVE</text>
+        <text x="0" y="18" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="14">Ghost-Printer内蔵BTチップが受信</text>
+      </g>
+      <line x1="450" y1="262" x2="450" y2="292" stroke="rgba(234,232,225,0.5)" stroke-width="1.5" marker-end="url(#arrowA)"/>
+
+      <!-- Step 4: Software (Python) -->
+      <g transform="translate(450, 320)">
+        <rect x="-180" y="-30" width="360" height="60" rx="8" fill="#141420" stroke="#9b8ec4" stroke-width="1.5"/>
+        <text x="0" y="-5" text-anchor="middle" fill="#9b8ec4" font-family="Space Mono" font-size="10" font-weight="700" letter-spacing="2">STEP 4 — STORE & ANALYZE</text>
+        <text x="0" y="18" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="14">Python が SQLite に保存・HRV計算</text>
+      </g>
+      <line x1="450" y1="352" x2="450" y2="382" stroke="rgba(234,232,225,0.5)" stroke-width="1.5" marker-end="url(#arrowA)"/>
+
+      <!-- Step 5: Bonsai meaning extraction -->
+      <g transform="translate(450, 410)">
+        <rect x="-180" y="-30" width="360" height="60" rx="8" fill="#141420" stroke="#b8d46e" stroke-width="1.5"/>
+        <text x="0" y="-5" text-anchor="middle" fill="#b8d46e" font-family="Space Mono" font-size="10" font-weight="700" letter-spacing="2">STEP 5 — MEANING EXTRACTION (BONSAI)</text>
+        <text x="0" y="18" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="14">Bonsai 1.7B が「重要度・感情・性格シグナル」を抽出</text>
+      </g>
+      <line x1="450" y1="442" x2="450" y2="472" stroke="rgba(234,232,225,0.5)" stroke-width="1.5" marker-end="url(#arrowA)"/>
+
+      <!-- Step 6: SOUL format -->
+      <g transform="translate(450, 500)">
+        <rect x="-180" y="-30" width="360" height="60" rx="8" fill="#141420" stroke="#d4a853" stroke-width="1.5"/>
+        <text x="0" y="-5" text-anchor="middle" fill="#d4a853" font-family="Space Mono" font-size="10" font-weight="700" letter-spacing="2">STEP 6 — SOUL FORMAT</text>
+        <text x="0" y="18" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="14">ベイズ更新で SOUL（4層バイナリ）に統合</text>
+      </g>
+      <line x1="450" y1="532" x2="450" y2="562" stroke="rgba(234,232,225,0.5)" stroke-width="1.5" marker-end="url(#arrowA)"/>
+      <text x="470" y="550" fill="rgba(110,168,212,0.8)" font-family="Space Mono" font-size="10">Permission Gateway</text>
+
+      <!-- Step 7: External AI output -->
+      <g transform="translate(450, 590)">
+        <rect x="-180" y="-30" width="360" height="60" rx="30" fill="#141420" stroke="#e07b6a" stroke-width="1.5"/>
+        <text x="0" y="-5" text-anchor="middle" fill="#e07b6a" font-family="Space Mono" font-size="10" font-weight="700" letter-spacing="2">STEP 7 — EXTERNAL AI OUTPUT</text>
+        <text x="0" y="18" text-anchor="middle" fill="#eae8e1" font-family="Noto Serif JP" font-size="14">外部AI（Claude等）がSOULを読み、あなた宛の返答を生成</text>
+      </g>
+
+      <!-- Side annotations -->
+      <g transform="translate(85, 140)">
+        <text fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="12">光を当てて血流を読む</text>
+      </g>
+      <g transform="translate(85, 230)">
+        <text fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="12">耳のように電波を聴く</text>
+      </g>
+      <g transform="translate(85, 320)">
+        <text fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="12">数字として記録</text>
+      </g>
+      <g transform="translate(85, 410)">
+        <text fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="12">意味づけ（ローカルAI）</text>
+      </g>
+      <g transform="translate(85, 500)">
+        <text fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="12">AIが読みやすい姿に</text>
+      </g>
+      <g transform="translate(85, 590)">
+        <text fill="rgba(234,232,225,0.58)" font-family="Noto Serif JP" font-size="12">あなた専用の返答</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══════════════ 4. 用語集 ═══════════════ -->
+<section>
+  <h2><span class="num">04</span>用語集</h2>
+  <p class="lead">このページで出てきた専門用語を、一言で説明します。</p>
+
+  <div class="gloss-grid">
+    <div class="gloss">
+      <div class="gloss-term">BLE</div>
+      <div class="gloss-def">Bluetooth Low Energy。電池を食わない近距離無線。スマートウォッチやワイヤレスイヤホンと同じ仕組み。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">PPG</div>
+      <div class="gloss-def">光電脈波。緑のLEDを肌にあて、血流の変化を光で読み取る技術。心拍計測に使う。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">HRV</div>
+      <div class="gloss-def">心拍変動。心拍の間隔のゆらぎから「緊張しているか／落ち着いているか」を推定できる指標。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">SpO2</div>
+      <div class="gloss-def">血中酸素飽和度。血の中に酸素がどれくらい溶けているかの数値。98%以上あれば健康。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">SoC</div>
+      <div class="gloss-def">System on Chip。CPUやメモリコントローラや通信機能を1つのチップに詰めたもの。スマホの心臓部。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">NPU</div>
+      <div class="gloss-def">Neural Processing Unit。AI計算に特化した回路。CPUより省電力で速くAIを動かせる。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">SBC</div>
+      <div class="gloss-def">Single Board Computer。名刺サイズの小型コンピュータ。Raspberry Piが有名。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">SQLite</div>
+      <div class="gloss-def">小さなデータベース。1つのファイルにデータを蓄える仕組み。ウェブブラウザ内部でも使われている。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">SOUL</div>
+      <div class="gloss-def">Ghost-Printer独自のデータ形式。AIがあなたを「理解」できるよう情報を整えた構造化フォーマット。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">Bonsai 1.7B</div>
+      <div class="gloss-def">Ghost-Printer内部で動く小型LLM（17億パラメータ・1bit量子化・240MB）。役割は<strong>意味抽出と重要度判定</strong>。会話はしない — その結果をSOULに統合し、実際の返答は外部AI（Claude等）が生成する。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">Pogo Pin</div>
+      <div class="gloss-def">スプリング付きの金属ピン。押し付けるだけで電気的接続ができる。磁石と組み合わせて充電に使う。</div>
+    </div>
+    <div class="gloss">
+      <div class="gloss-term">BlueZ</div>
+      <div class="gloss-def">Linux標準のBluetoothソフトウェア。ハードとアプリの橋渡しをする。</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Ghost-Printer Device Architecture Diagram · 2026-04-18<br>
+  Companion to: colmi_r02_setup_guide.md · Pre-MVP
+</footer>
+
+</div>
+</body>
+</html>

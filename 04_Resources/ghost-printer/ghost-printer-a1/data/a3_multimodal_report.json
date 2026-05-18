@@ -1,0 +1,364 @@
+{
+  "results": [
+    {
+      "case": "曖昧なテキスト — コンテキストで意味が変わる",
+      "text_only": {
+        "importance": 0.5,
+        "emotion": {
+          "name": "calm",
+          "intensity": 0.6
+        },
+        "personality_signals": [
+          {
+            "dimension": "independence",
+            "value": 0.8,
+            "confidence": 0.7
+          },
+          {
+            "dimension": "extraversion",
+            "value": 0.3,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "conscientiousness",
+            "value": 0.6,
+            "confidence": 0.5
+          }
+        ],
+        "topics": [
+          "solitude",
+          "personal time"
+        ],
+        "values": [
+          "valuing solitude",
+          "self-care"
+        ],
+        "summary": "Spent a quiet day alone, reflecting on personal thoughts and finding peace in solitude."
+      },
+      "with_context": {
+        "importance": 0.3,
+        "emotion": {
+          "name": "calm",
+          "intensity": 0.5
+        },
+        "personality_signals": [
+          {
+            "dimension": "extraversion",
+            "value": 0.3,
+            "confidence": 0.4
+          },
+          {
+            "dimension": "independence",
+            "value": 0.7,
+            "confidence": 0.5
+          }
+        ],
+        "topics": [
+          "solitude",
+          "quiet time"
+        ],
+        "values": [
+          "valuing personal space"
+        ],
+        "summary": "Spent a quiet evening alone at home, enjoying solitude."
+      },
+      "context": {
+        "location": "自宅",
+        "time_of_day": "夜",
+        "date": "2026-04-15"
+      }
+    },
+    {
+      "case": "活動的なテキスト — 場所で印象が変わる",
+      "text_only": {
+        "importance": 0.5,
+        "emotion": {
+          "name": "excitement",
+          "intensity": 0.6
+        },
+        "personality_signals": [
+          {
+            "dimension": "conscientiousness",
+            "value": 0.85,
+            "confidence": 0.7
+          },
+          {
+            "dimension": "independence",
+            "value": 0.7,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "risk_tolerance",
+            "value": 0.3,
+            "confidence": 0.5
+          }
+        ],
+        "topics": [
+          "work",
+          "productivity",
+          "focus"
+        ],
+        "values": [
+          "discipline",
+          "perseverance"
+        ],
+        "summary": "集中して作業した結果、効率よく進捗を出した体験"
+      },
+      "with_context": {
+        "importance": 0.6,
+        "emotion": {
+          "name": "excitement",
+          "intensity": 0.6
+        },
+        "personality_signals": [
+          {
+            "dimension": "conscientiousness",
+            "value": 0.85,
+            "confidence": 0.75
+          },
+          {
+            "dimension": "openness",
+            "value": 0.65,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "independence",
+            "value": 0.7,
+            "confidence": 0.65
+          }
+        ],
+        "topics": [
+          "work productivity",
+          "co-working spaces",
+          "time management"
+        ],
+        "values": [
+          "discipline",
+          "dedication to work",
+          "efficiency"
+        ],
+        "summary": "朝のコワーキングスペースで3時間集中作業し、大きな進展を実感した"
+      },
+      "context": {
+        "location": "コワーキングスペース",
+        "time_of_day": "朝",
+        "date": "2026-04-15"
+      }
+    },
+    {
+      "case": "感情的なテキスト — 時間帯で重みが変わる",
+      "text_only": {
+        "importance": 0.6,
+        "emotion": {
+          "name": "anxiety",
+          "intensity": 0.8
+        },
+        "personality_signals": [
+          {
+            "dimension": "neuroticism",
+            "value": 0.7,
+            "confidence": 0.7
+          }
+        ],
+        "topics": [
+          "future",
+          "anxiety"
+        ],
+        "values": [
+          "concern for future stability"
+        ],
+        "summary": "The person felt anxious about the future."
+      },
+      "with_context": {
+        "importance": 0.75,
+        "emotion": {
+          "name": "anxiety",
+          "intensity": 0.85
+        },
+        "personality_signals": [
+          {
+            "dimension": "neuroticism",
+            "value": 0.75,
+            "confidence": 0.7
+          },
+          {
+            "dimension": "risk_tolerance",
+            "value": 0.3,
+            "confidence": 0.6
+          }
+        ],
+        "topics": [
+          "future uncertainty",
+          "personal anxiety",
+          "sleep disruption"
+        ],
+        "values": [
+          "importance of mental health awareness",
+          "need for future planning"
+        ],
+        "summary": "深夜に未来についての不安を抱え、強い焦燥感を示している"
+      },
+      "context": {
+        "location": "自宅ベッド",
+        "time_of_day": "深夜3時",
+        "date": "2026-04-15"
+      }
+    },
+    {
+      "case": "社交的なテキスト — 場所で性質が変わる",
+      "text_only": {
+        "importance": 0.55,
+        "emotion": {
+          "name": "joy",
+          "intensity": 0.65
+        },
+        "personality_signals": [
+          {
+            "dimension": "extraversion",
+            "value": 0.82,
+            "confidence": 0.75
+          },
+          {
+            "dimension": "openness",
+            "value": 0.68,
+            "confidence": 0.65
+          },
+          {
+            "dimension": "empathy",
+            "value": 0.55,
+            "confidence": 0.5
+          }
+        ],
+        "topics": [
+          "social interaction",
+          "new experiences",
+          "networking"
+        ],
+        "values": [
+          "valuing social connections",
+          "openness to new relationships"
+        ],
+        "summary": "Enjoyed engaging with a large group of people and forming new connections."
+      },
+      "with_context": {
+        "importance": 0.6,
+        "emotion": {
+          "name": "joy",
+          "intensity": 0.7
+        },
+        "personality_signals": [
+          {
+            "dimension": "extraversion",
+            "value": 0.8,
+            "confidence": 0.7
+          },
+          {
+            "dimension": "openness",
+            "value": 0.6,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "agreeableness",
+            "value": 0.7,
+            "confidence": 0.5
+          },
+          {
+            "dimension": "curiosity",
+            "value": 0.6,
+            "confidence": 0.5
+          }
+        ],
+        "topics": [
+          "networking",
+          "technology conference",
+          "social interactions"
+        ],
+        "values": [
+          "social connections",
+          "professional growth"
+        ],
+        "summary": "参加者は技術カンファレンスでの多数の人との交流と新しい出会いを楽しんだ"
+      },
+      "context": {
+        "location": "技術カンファレンス",
+        "time_of_day": "昼",
+        "date": "2026-04-15"
+      }
+    },
+    {
+      "case": "日常テキスト — コンテキストで重要度が変わる",
+      "text_only": {
+        "importance": 0.3,
+        "emotion": {
+          "name": "joy",
+          "intensity": 0.3
+        },
+        "personality_signals": [
+          {
+            "dimension": "openness",
+            "value": 0.2,
+            "confidence": 0.3
+          },
+          {
+            "dimension": "curiosity",
+            "value": 0.2,
+            "confidence": 0.3
+          }
+        ],
+        "topics": [
+          "food",
+          "eating",
+          "delicious meal"
+        ],
+        "values": [
+          "appreciation for good food",
+          "enjoyment of simple pleasures"
+        ],
+        "summary": "Adequate analysis of the text, but limited information to determine personality traits with high confidence."
+      },
+      "with_context": {
+        "importance": 0.5,
+        "emotion": {
+          "name": "joy",
+          "intensity": 0.6
+        },
+        "personality_signals": [
+          {
+            "dimension": "openness",
+            "value": 0.7,
+            "confidence": 0.6
+          },
+          {
+            "dimension": "conscientiousness",
+            "value": 0.5,
+            "confidence": 0.5
+          },
+          {
+            "dimension": "risk_tolerance",
+            "value": 0.3,
+            "confidence": 0.5
+          }
+        ],
+        "topics": [
+          "luxury dining",
+          "culinary experience"
+        ],
+        "values": [
+          "appreciation for fine dining",
+          "enjoyment of high-quality experiences"
+        ],
+        "summary": "A luxurious dining experience at a Michelin-starred restaurant reflects appreciation for high-quality food and possibly openness to enjoyable experiences."
+      },
+      "context": {
+        "location": "ミシュラン三つ星レストラン",
+        "time_of_day": "夕方",
+        "date": "2026-04-15"
+      }
+    }
+  ],
+  "improvements": {
+    "importance": 3,
+    "emotion": 0,
+    "personality": 5
+  }
+}

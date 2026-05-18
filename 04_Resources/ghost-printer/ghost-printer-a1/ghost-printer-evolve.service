@@ -1,0 +1,30 @@
+[Unit]
+Description=Ghost-Printer — Watch Point evolution cycle (one-shot)
+After=ghost-printer.service
+# Only run if the main service is active (or skip gracefully)
+# BindsTo is intentionally NOT used — evolve can run even if main is stopped briefly
+
+[Service]
+Type=oneshot
+
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/ghost-printer
+Environment=PYTHONUNBUFFERED=1
+Environment=PATH=/home/pi/ghost-printer/.venv/bin:/usr/local/bin:/usr/bin:/bin
+
+ExecStart=/home/pi/ghost-printer/.venv/bin/python /home/pi/ghost-printer/main.py \
+    --evolve \
+    --soul-path /home/pi/ghost-printer/data/soul.json \
+    --cortex-path /home/pi/ghost-printer/data/CORTEX.bin
+
+# セキュリティは main と同等
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/pi/ghost-printer/data /home/pi/ghost-printer/logs /tmp
+PrivateTmp=true
+
+StandardOutput=append:/home/pi/ghost-printer/logs/evolve.log
+StandardError=append:/home/pi/ghost-printer/logs/evolve.err.log
+SyslogIdentifier=ghost-printer-evolve

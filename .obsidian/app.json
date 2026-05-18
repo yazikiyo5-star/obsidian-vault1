@@ -1,0 +1,12 @@
+{
+  "promptDelete": false,
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "02_Inbox",
+  "attachmentFolderPath": "00_Meta/Attachments",
+  "useMarkdownLinks": false,
+  "showLineNumber": true,
+  "livePreview": true,
+  "showFrontmatter": true,
+  "defaultViewMode": "source"
+}

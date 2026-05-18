@@ -1,0 +1,17 @@
+# === Obsidian プラグイン本体（Obsidian が UI で自動更新するためGit不要） ===
+.obsidian/plugins/
+
+# === ワークスペース状態（マシン固有） ===
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# === Copilotの大量データ（任意・サイズが膨らむなら外す） ===
+# copilot/copilot-conversations/
+# copilot/copilot-index-*.json
+
+# === OS / エディタのゴミ ===
+.DS_Store
+.trash/
+*.swp
+*.swo
+node_modules/

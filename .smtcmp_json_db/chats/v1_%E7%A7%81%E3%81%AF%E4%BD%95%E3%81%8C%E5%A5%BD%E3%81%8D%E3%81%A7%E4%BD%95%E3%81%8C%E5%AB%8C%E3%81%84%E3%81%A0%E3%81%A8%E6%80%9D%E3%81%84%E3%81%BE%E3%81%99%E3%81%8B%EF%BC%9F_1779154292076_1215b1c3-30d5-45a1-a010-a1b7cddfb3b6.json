@@ -1,0 +1,56 @@
+{
+  "id": "1215b1c3-30d5-45a1-a010-a1b7cddfb3b6",
+  "title": "私は何が好きで何が嫌いだと思いますか？",
+  "messages": [
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": "私は何が好きで何が嫌いだと思いますか？",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": [
+        {
+          "type": "text",
+          "text": "\n\n私は何が好きで何が嫌いだと思いますか？\n\n"
+        }
+      ],
+      "id": "22198cde-b6bf-43b6-ac14-c0f51ff35316",
+      "mentionables": [
+        {
+          "type": "current-file",
+          "file": "copilot/copilot-conversations/私についての短いタイトル（最大5語）を返します。_独自の@20260518_210323.md"
+        }
+      ]
+    }
+  ],
+  "createdAt": 1779154180579,
+  "updatedAt": 1779154292076,
+  "schemaVersion": 1
+}

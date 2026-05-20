@@ -45,12 +45,12 @@
       "mentionables": [
         {
           "type": "current-file",
-          "file": "copilot/copilot-conversations/私についての短いタイトル（最大5語）を返します。_独自の@20260518_210323.md"
+          "file": "04_Resources/Hannah-Arendt-Report.md"
         }
       ]
     }
   ],
   "createdAt": 1779154180579,
-  "updatedAt": 1779170094735,
+  "updatedAt": 1779248388386,
   "schemaVersion": 1
 }

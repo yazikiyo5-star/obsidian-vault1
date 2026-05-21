@@ -10,7 +10,7 @@ tags: [digest, meta]
 
 ## 仕組み
 
-launchd ジョブ（Cowork 非依存）が毎朝 `daily-digest.py` を発火 → Grok（xAI API、未設定時は Claude Code）が3ジャンルを調査 → `YYYY-MM-DD.md` としてここに保存されます。
+launchd ジョブ（Cowork 非依存）が毎朝 `daily-digest.py` を発火 → Hermes Agent（`hermes -z`、未検出/失敗時は Claude Code）が3ジャンルを調査 → `YYYY-MM-DD.md` としてここに保存されます。Hermes でどの AI を使うかは `hermes model` の設定に従います（Grok 等）。
 
 ## フィードバックループ
 

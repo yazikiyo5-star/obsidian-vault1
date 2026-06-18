@@ -29,16 +29,26 @@ updated: 2026-06-18 HH:mm
 ## ファイル命名
 `<YYYY-MM-DD>-<slug>.md`（例 `2026-06-18-arendt-research-state.md`）。
 
-## Hermes 側で必要な設定（要・あなたの確認）
-Hermes がこのフォルダを読むには、`~/.hermes/config.yaml` の監視/コンテキスト対象に
-このパスを含める必要がある:
+## Hermes 側の実態（config.yaml 全499行を確認済 2026-06-18）
+`~/.hermes/config.yaml` に **Vault/Obsidian/監視ディレクトリの固定パスは存在しない**。
+関係する設定は次の3つ:
 
-```
-/Users/haru/Documents/Claude/Projects/obsidian,hermes/Vault/00_Meta/cowork-bridge/
-```
+1. **読み取り**: Hermes は `terminal` ツールセット（`cwd: .`）でファイルシステムに直接アクセスできる。
+   → タスクがこのフォルダのパスを参照すれば、**追加設定なしで即読める**（オンデマンド読取）。
+   ただし常時監視ではなく、起動 cwd が基準。Vault 内で起動するか絶対パス指定が必要。
+2. **Skill 自動ロード**: `skills.external_dirs: []` が**空**。ここに
+   `…/Vault/04_Resources/Skills` を足すと、保存した Skill を Hermes が自動認識する。
+3. **常時監視**: `cron:` + `kanban:` がタスク自動処理エンジン。bridge を継続監視するなら
+   このフォルダを見る cron ジョブを1つ追加する（既存 05_Tasks 監視と同じ仕組み）。
 
-- 既に Vault 全体を読む設定なら**追加不要**（Hermes は 05_Tasks/inbox を監視している実績あり）。
-- フォルダ単位監視なら上記パスを 1 行追加。**設定変更は無断で行わず、必ず確認してから**。
+### 推奨する1行追加（要・あなたの承認 / 私は無断編集しない）
+```yaml
+skills:
+  external_dirs:
+    - /Users/haru/Documents/Claude/Projects/obsidian,hermes/Vault/04_Resources/Skills
+```
+- 即読取だけなら設定変更ゼロでOK（パスを渡せば読む）。
+- 自動ロード／常時監視が要るなら上記＋cron。**config.yaml 編集はあなたの承認後に**。
 
 ## 使い方（Cowork 側）
 > 「ブリッジに <タスク> の作業状態を書き出して」→ Cowork がこのフォルダに state ファイルを作成。

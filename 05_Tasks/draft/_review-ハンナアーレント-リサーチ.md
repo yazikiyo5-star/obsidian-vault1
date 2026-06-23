@@ -45,3 +45,5 @@ tags: [task, draft, research]
 hermes -z "次のSpecで日本語リサーチレポートを作成。出典URL必須・専門用語は言い換え併記。観点=生涯/主要著作/中心概念(悪の凡庸さ,活動と労働の区別,公共性)/現代的意義/入門ガイド。対象=Hannah Arendt。出力はMarkdownのみ。"
 ```
 → 出力を私（Claude）に貼れば検証して `report.md` に整える。
+
+B
